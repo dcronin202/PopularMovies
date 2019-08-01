@@ -1,3 +1,9 @@
 <resources>
+
     <string name="app_name">Popular Movies</string>
+
+    <!-- Detail Activity -->
+    <string name="detail_original_title">Original Title:</string>
+    <string name="detail_release_date">Release Date:</string>
+
 </resources>
