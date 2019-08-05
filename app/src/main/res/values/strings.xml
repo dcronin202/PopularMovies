@@ -6,4 +6,8 @@
     <string name="detail_original_title">Original Title:</string>
     <string name="detail_release_date">Release Date:</string>
 
+    <!-- Menu Options -->
+    <string name="menu_most_popular">Most Popular</string>
+    <string name="menu_highest_rated">Highest Rated</string>
+
 </resources>
