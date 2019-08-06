@@ -7,11 +7,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    MainActivityFragment mainActivityFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivityFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
     }
 
     @Override
@@ -21,17 +23,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // @Override
-    public boolean onOptionItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.most_popular) {
             // Sort by most popular
+            mainActivityFragment.sortByPopularity();
             return true;
         }
 
         if (id == R.id.highest_rated) {
             // Sort by highest rated
+            mainActivityFragment.sortByTopRated();
             return true;
         }
 
