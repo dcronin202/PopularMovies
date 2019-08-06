@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.android.popularmovies_v1.data.Movie;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -45,10 +47,24 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         }
 
         ImageView posterView = (ImageView) convertView.findViewById(R.id.movie_image);
+        final View finalConvertView = convertView;
         Picasso.get()
                 .load(poster.getPosterImage())
                 .fit()  // this "stretches to fit" inside the image-view
-                .into(posterView);
+                .into(posterView, new Callback() {
+                    @Override
+                    // Add Progress Bar via Picasso
+                    public void onSuccess() {
+                        ProgressBar progressBar = finalConvertView.findViewById(R.id.movie_loading_indicator);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        ProgressBar progressBar = finalConvertView.findViewById(R.id.movie_loading_indicator);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
 
         return convertView;
 
