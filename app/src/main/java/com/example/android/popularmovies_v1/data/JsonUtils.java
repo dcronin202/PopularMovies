@@ -23,6 +23,7 @@ public class JsonUtils {
     // Tag for log messages
     private static final String LOG_TAG = JsonUtils.class.getSimpleName();
 
+
     private JsonUtils() {
     }
 
@@ -42,7 +43,7 @@ public class JsonUtils {
         }
 
         // Extract relevant fields from the JSON response
-        List<Movie> movies = extractFeatureFromJson(jsonResponse);
+        List<Movie> movies = parseMoviesFromJson(jsonResponse);
 
         // Return list of movies
         return movies;
@@ -131,7 +132,7 @@ public class JsonUtils {
     }
 
     /* Return a list of Movie objects that have been built up from parsing the given JSON response */
-    private static List<Movie> extractFeatureFromJson(String movieJSON) {
+    private static List<Movie> parseMoviesFromJson(String movieJSON) {
         // If the JSON string is empty or null, return early.
         if (TextUtils.isEmpty(movieJSON)) {
             return null;
