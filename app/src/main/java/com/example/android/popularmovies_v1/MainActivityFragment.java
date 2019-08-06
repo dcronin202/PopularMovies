@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies_v1.data.JsonUtils;
 import com.example.android.popularmovies_v1.data.Movie;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -29,23 +29,12 @@ public class MainActivityFragment extends Fragment {
     // TODO: REMOVE API KEY BEFORE SUBMITTING
     private static final String apiKey = "301ade02190b07969335c116b1456868";
 
-    // URL for the movie data
-    private static final String MOVIE_DB_URL = "http://api.themoviedb.org/3/movie/popular?api_key=" + apiKey;
+    // URL for movie data sorted by popularity
+    private static final String MOVIE_MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=" + apiKey;
 
+    // URL for movie data sorted by top rated
+    private static final String MOVIE_TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apiKey;
 
-    // dummy data
-    Movie[] moviePosters = {
-            new Movie("Title 1", "OT", "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "Plot", 7.6, "2019-03-05", 109.035),
-            new Movie("Title 2", "OT","https://image.tmdb.org/t/p/w185//dzBtMocZuJbjLOXvrl4zGYigDzh.jpg", "Plot", 7.5, "2019-03-06", 108.035),
-            new Movie("Title 3", "OT","https://image.tmdb.org/t/p/w185//or06FN3Dka5tukK1e9sl16pB3iy.jpg", "Plot", 8.6, "2018-03-07", 107.035),
-            new Movie("Title 4", "OT","https://image.tmdb.org/t/p/w185//rjbNpRMoVvqHmhmksbokcyCr7wn.jpg", "Plot", 9.6, "2017-03-08", 106.035),
-            new Movie("Title 5", "OT","https://image.tmdb.org/t/p/w185//xRWht48C2V8XNfzvPehyClOvDni.jpg", "Plot", 7.3, "2016-03-09", 109.037),
-            new Movie("Title 6", "OT","https://image.tmdb.org/t/p/w185//8j58iEBw9pOXFD2L0nt0ZXeHviB.jpg", "Plot", 6.6, "2015-03-10", 109.039),
-            new Movie("Title 7", "OT","https://image.tmdb.org/t/p/w185//pU3bnutJU91u3b4IeRPQTOP8jhV.jpg", "Plot", 5.6, "2014-03-11", 99.035),
-            new Movie("Title 8", "OT","https://image.tmdb.org/t/p/w185//keym7MPn1icW1wWfzMnW3HeuzWU.jpg", "Plot", 4.6, "2013-03-12", 102.03),
-            new Movie("Title 9", "OT","https://image.tmdb.org/t/p/w185//AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg", "Plot", 7.0, "2012-03-13", 105.035),
-            new Movie("Title 10", "OT","https://image.tmdb.org/t/p/w185//7WsyChQLEftFiDOVTGkv3hFpyyt.jpg", "Plot", 7.9, "2011-03-14", 104.035)
-    };
 
     public MainActivityFragment() {
     }
@@ -53,20 +42,16 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null || !savedInstanceState.containsKey("results")) {
-            movieList = new ArrayList<Movie>(Arrays.asList(moviePosters));
-        } else {
-            movieList = savedInstanceState.getParcelableArrayList("results");
-        }
+        movieList = new ArrayList<Movie>();
 
         // Start the AsyncTask to fetch the movie data
         MovieAsyncTask task = new MovieAsyncTask();
-        task.execute(MOVIE_DB_URL);
+        task.execute(MOVIE_MOST_POPULAR_URL);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("results", movieList);
+//        outState.putParcelableArrayList("results", movieList);
         super.onSaveInstanceState(outState);
     }
 
@@ -84,7 +69,8 @@ public class MainActivityFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchMovieDetailActivity(position);
+                Movie moviePosition = movieAdapter.getItem(position);
+                launchMovieDetailActivity(moviePosition);
             }
         });
 
@@ -92,10 +78,22 @@ public class MainActivityFragment extends Fragment {
 
     }
 
-    private void launchMovieDetailActivity(int position) {
+    private void launchMovieDetailActivity(Movie movieAtPosition) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(DetailActivity.MOVIE_DETAILS, position);
+        intent.putExtra(DetailActivity.MOVIE_DETAILS, movieAtPosition);
         startActivity(intent);
+    }
+
+    public void sortByPopularity() {
+        // Start the AsyncTask to fetch the movie data sorted by popularity
+        MovieAsyncTask task = new MovieAsyncTask();
+        task.execute(MOVIE_MOST_POPULAR_URL);
+    }
+
+    public void sortByTopRated() {
+        // Start the AsyncTask to fetch the movie data sorted by average ratings
+        MovieAsyncTask task = new MovieAsyncTask();
+        task.execute(MOVIE_TOP_RATED_URL);
     }
 
     private class MovieAsyncTask extends AsyncTask<String, Void, List<Movie>> {
