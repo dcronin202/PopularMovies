@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies_v1.data.JsonUtils;
 import com.example.android.popularmovies_v1.data.Movie;
@@ -51,7 +50,6 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        outState.putParcelableArrayList("results", movieList);
         super.onSaveInstanceState(outState);
     }
 
@@ -119,20 +117,10 @@ public class MainActivityFragment extends Fragment {
             // If there is a valid list of Movies, then add them to the adapter's data set. This will trigger the ListView to update.
             if (data != null) {
                 movieAdapter.addAll(data);
+
             }
         }
 
     }
-
-        /* FOR THE MENU ITEMS: will need something like this to sort the list of movies.
-    public int compare(Movie a, Movie b) {
-        if (a.popularity == b.popularity) {
-            return 0;
-        } else if (a.popularity > b.popularity) {
-            return 1;
-        } else {
-            return -1;
-        }
-    } */
 
 }
