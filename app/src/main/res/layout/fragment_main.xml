@@ -5,11 +5,13 @@
     android:id="@+id/movie_grid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnWidth="150dp"
+    android:gravity="center"
     android:numColumns="auto_fit"
-    android:verticalSpacing="0dp"
+    android:columnWidth="185dp"
+    android:verticalSpacing="8dp"
     android:horizontalSpacing="0dp"
-    android:stretchMode="columnWidth"
+    android:stretchMode="spacingWidthUniform"
+    android:background="#212121"
     tools:context=".MainActivityFragment">
 
 </GridView>

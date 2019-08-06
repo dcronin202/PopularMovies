@@ -5,6 +5,7 @@
     <!-- Detail Activity -->
     <string name="detail_original_title">Original Title:</string>
     <string name="detail_release_date">Release Date:</string>
+    <string name="detail_avg_rating">Average Rating:</string>
 
     <!-- Menu Options -->
     <string name="menu_most_popular">Most Popular</string>
@@ -14,6 +15,6 @@
     <string name="out_of_ten">/10</string>
 
     <!-- Error Message -->
-    <string name="error_toast_message">Movie data not available.</string>
+    <string name="error_message">Movie data not available.</string>
 
 </resources>
