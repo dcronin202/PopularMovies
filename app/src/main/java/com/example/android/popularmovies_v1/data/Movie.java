@@ -3,7 +3,6 @@ package com.example.android.popularmovies_v1.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
 
 public class Movie implements Parcelable {
 
@@ -112,7 +111,7 @@ public class Movie implements Parcelable {
 
     }
 
-    public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public final static Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel parcel) {
             return new Movie(parcel);
