@@ -10,4 +10,10 @@
     <string name="menu_most_popular">Most Popular</string>
     <string name="menu_highest_rated">Highest Rated</string>
 
+    <!-- Ratings out of 10 -->
+    <string name="out_of_ten">/10</string>
+
+    <!-- Error Message -->
+    <string name="error_toast_message">Movie data not available.</string>
+
 </resources>
