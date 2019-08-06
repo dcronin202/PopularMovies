@@ -43,7 +43,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void closeOnError() {
-        Toast.makeText(this, R.string.error_toast_message, Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -65,14 +64,14 @@ public class DetailActivity extends AppCompatActivity {
 
         // Year - reformatted original String input to display MMMM yyyy format
         String releaseDate = movie.getReleaseDate();
-        DateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-DD", Locale.ENGLISH);
+        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date newReleaseDate = null;
         try {
             newReleaseDate = (Date) oldDateFormat.parse(releaseDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy");
         String finalDate = newDateFormat.format(newReleaseDate);
 
         TextView yearReleased = findViewById(R.id.release_date);
