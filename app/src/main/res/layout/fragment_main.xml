@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/movie_grid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:numColumns="auto_fit"
-    android:columnWidth="185dp"
-    android:verticalSpacing="8dp"
-    android:horizontalSpacing="0dp"
-    android:stretchMode="spacingWidthUniform"
-    android:background="#212121"
-    tools:context=".MainActivityFragment">
+    android:orientation="vertical"
+    android:background="#212121">
 
-</GridView>
+    <TextView
+        android:id="@+id/error_message_display"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/error_message"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <GridView
+        android:id="@+id/movie_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:columnWidth="185dp"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="spacingWidthUniform"
+        tools:context=".MainActivityFragment">
+
+    </GridView>
+
+</LinearLayout>
+
+
