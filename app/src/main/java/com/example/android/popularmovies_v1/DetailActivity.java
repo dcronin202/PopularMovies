@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies_v1.data.Movie;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +33,7 @@ public class DetailActivity extends AppCompatActivity {
 
             populateMovieDetails(movieDetails);
             // Change DetailActivity title/header to match movie title
-            setTitle(movieDetails.getMovieTitle());
+            setTitle(R.string.detail_header);
 
         } else {
             closeOnError();
@@ -64,14 +62,14 @@ public class DetailActivity extends AppCompatActivity {
 
         // Year - reformatted original String input to display MMMM yyyy format
         String releaseDate = movie.getReleaseDate();
-        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date newReleaseDate = null;
         try {
             newReleaseDate = (Date) oldDateFormat.parse(releaseDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy");
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
         String finalDate = newDateFormat.format(newReleaseDate);
 
         TextView yearReleased = findViewById(R.id.release_date);
