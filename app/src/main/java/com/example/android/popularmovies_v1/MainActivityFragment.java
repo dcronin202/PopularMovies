@@ -30,8 +30,8 @@ public class MainActivityFragment extends Fragment {
 
     private ArrayList<Movie> movieList;
 
-    // TODO: REMOVE API KEY BEFORE SUBMITTING
-    private static final String apiKey = "301ade02190b07969335c116b1456868";
+    // TODO: API KEY GOES HERE
+    private static final String apiKey = " ";
 
     // URL for movie data sorted by popularity
     private static final String MOVIE_MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=" + apiKey;
