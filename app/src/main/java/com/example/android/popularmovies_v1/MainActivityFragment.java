@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.android.popularmovies_v1.data.JsonUtils;
 import com.example.android.popularmovies_v1.data.Movie;
@@ -22,6 +23,10 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
     private MovieAdapter movieAdapter;
+
+    private GridView gridView;
+
+    private TextView errorMessage;
 
     private ArrayList<Movie> movieList;
 
@@ -61,8 +66,12 @@ public class MainActivityFragment extends Fragment {
         movieAdapter = new MovieAdapter(getActivity(), movieList);
 
         // Get a reference to the ListView and attach this adapter to it
-        GridView gridView = (GridView) rootView.findViewById(R.id.movie_grid);
+        gridView = rootView.findViewById(R.id.movie_grid);
         gridView.setAdapter(movieAdapter);
+
+        // Get a reference to the error message
+        errorMessage = rootView.findViewById(R.id.error_message_display);
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,9 +124,15 @@ public class MainActivityFragment extends Fragment {
             movieAdapter.clear();
 
             // If there is a valid list of Movies, then add them to the adapter's data set. This will trigger the ListView to update.
-            if (data != null) {
+            if (data != null && data.size() > 0) {
+                gridView.setVisibility(View.VISIBLE);
+                errorMessage.setVisibility(View.GONE);
                 movieAdapter.addAll(data);
 
+            } else {
+                // If not, show error message
+                gridView.setVisibility(View.GONE);
+                errorMessage.setVisibility(View.VISIBLE);
             }
         }
 
