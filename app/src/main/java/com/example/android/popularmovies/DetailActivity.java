@@ -2,6 +2,8 @@ package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,10 +15,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 public class DetailActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAILS = "movie";
+
+    private MoviePagerAdapter mMoviePagerAdapter;
+
+    private ViewPager mViewPager;
 
 
     @Override
@@ -24,15 +31,22 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-
         Intent intent = getIntent();
 
         Movie movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
+        /* Set up ViewPager with the MoviePagerAdapter
+        mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(mViewPager); */
+
         if (movieDetails != null) {
 
             populateMovieDetails(movieDetails);
-            // Change DetailActivity title/header to match movie title
+
             setTitle(R.string.detail_header);
 
         } else {
@@ -85,6 +99,17 @@ public class DetailActivity extends AppCompatActivity {
         // Plot Summary
         TextView plotSummary = findViewById(R.id.plot_summary);
         plotSummary.setText(movie.getPlot());
+
+    }
+
+    //Adds fragments to MoviePagerAdapter
+    private void setupViewPager(ViewPager viewPager) {
+        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new MovieOverviewFragment(), String.valueOf(R.string.tab_overview));
+        adapter.addFragment(new MovieVideosFragment(), String.valueOf(R.string.tab_videos));
+        adapter.addFragment(new MovieReviewsFragment(), String.valueOf(R.string.tab_reviews));
+
+        viewPager.setAdapter(adapter);
 
     }
 
