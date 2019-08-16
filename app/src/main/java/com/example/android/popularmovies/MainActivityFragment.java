@@ -1,4 +1,4 @@
-package com.example.android.popularmovies_v1;
+package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,8 +11,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.example.android.popularmovies_v1.data.JsonUtils;
-import com.example.android.popularmovies_v1.data.Movie;
+import com.example.android.popularmovies.data.JsonUtils;
+import com.example.android.popularmovies.data.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

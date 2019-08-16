@@ -1,4 +1,4 @@
-package com.example.android.popularmovies_v1;
+package com.example.android.popularmovies;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.example.android.popularmovies_v1.data.Movie;
+import com.example.android.popularmovies.data.Movie;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

@@ -1,4 +1,4 @@
-package com.example.android.popularmovies_v1;
+package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.popularmovies_v1.data.Movie;
+import com.example.android.popularmovies.data.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
