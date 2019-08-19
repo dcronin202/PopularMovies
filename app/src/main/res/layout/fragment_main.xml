@@ -28,7 +28,7 @@
         android:verticalSpacing="8dp"
         android:horizontalSpacing="0dp"
         android:stretchMode="spacingWidthUniform"
-        tools:context=".MainActivityFragment">
+        tools:context=".fragment.MainActivityFragment">
 
     </GridView>
 

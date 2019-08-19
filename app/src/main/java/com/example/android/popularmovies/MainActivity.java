@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.android.popularmovies.fragment.MainActivityFragment;
+
 public class MainActivity extends AppCompatActivity {
     MainActivityFragment mainActivityFragment;
 
