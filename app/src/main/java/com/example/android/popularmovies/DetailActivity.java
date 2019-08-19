@@ -7,15 +7,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.popularmovies.adapter.MoviePagerAdapter;
 import com.example.android.popularmovies.data.Movie;
+import com.example.android.popularmovies.fragment.MovieOverviewFragment;
+import com.example.android.popularmovies.fragment.MovieReviewsFragment;
+import com.example.android.popularmovies.fragment.MovieVideosFragment;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Set;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -35,14 +39,6 @@ public class DetailActivity extends AppCompatActivity {
 
         Movie movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
-        /* Set up ViewPager with the MoviePagerAdapter
-        mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(mViewPager); */
-
         if (movieDetails != null) {
 
             populateMovieDetails(movieDetails);
@@ -52,6 +48,14 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             closeOnError();
         }
+
+        //Set up ViewPager with the MoviePagerAdapter
+        mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     private void closeOnError() {
@@ -105,9 +109,27 @@ public class DetailActivity extends AppCompatActivity {
     //Adds fragments to MoviePagerAdapter
     private void setupViewPager(ViewPager viewPager) {
         MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MovieOverviewFragment(), String.valueOf(R.string.tab_overview));
-        adapter.addFragment(new MovieVideosFragment(), String.valueOf(R.string.tab_videos));
-        adapter.addFragment(new MovieReviewsFragment(), String.valueOf(R.string.tab_reviews));
+        adapter.addFragment(new MovieOverviewFragment(), getString(R.string.tab_overview));
+        adapter.addFragment(new MovieVideosFragment(), getString(R.string.tab_videos));
+        adapter.addFragment(new MovieReviewsFragment(), getString(R.string.tab_reviews));
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                Toast.makeText(DetailActivity.this, "Page "+ i + " is selected.", Toast.LENGTH_SHORT).show();
+                // TODO: Make methods for each fragment to update its view
+                // Similar to sortByTopRated() and ...ByPopularity() in MainActivityFragment (do this in the java fragments)
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
 
         viewPager.setAdapter(adapter);
 

@@ -3,4 +3,7 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#BDBDBD</color>
+
+    <color name="tabColor">#FBC02D</color>
+
 </resources>
