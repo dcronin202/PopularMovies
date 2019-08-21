@@ -3,28 +3,50 @@ package com.example.android.popularmovies.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 
 public class Movie implements Parcelable {
 
+    @SerializedName("id")
+    private int movieId;
+
+    @SerializedName("title")
     private String movieTitle;
-    private String originalTitle;
+
+    @SerializedName("poster_path")
     private String posterImage;
+
+    @SerializedName("overview")
     private String plot;
+
+    @SerializedName("vote_average")
     private double rating;
+
+    @SerializedName("release_date")
     private String releaseDate;
+
+    @SerializedName("popularity")
     private double popularity;
 
     public Movie() {
         }
 
-    public Movie(String movieTitle, String originalTitle, String posterImage, String plot, double rating, String releaseDate, double popularity) {
+    public Movie(String movieTitle, String posterImage, String plot, double rating, String releaseDate, double popularity) {
         this.movieTitle = movieTitle;
-        this.originalTitle = originalTitle;
         this.posterImage = posterImage;
         this.plot = plot;
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.popularity = popularity;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId() {
+        this.movieId = movieId;
     }
 
     public String getMovieTitle() {
@@ -35,16 +57,9 @@ public class Movie implements Parcelable {
         this.movieTitle = movieTitle;
     }
 
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
     public String getPosterImage() {
-        return posterImage;
+        // TODO make url a constant
+        return "https://image.tmdb.org/t/p/w185/" + posterImage;
     }
 
     public void setPosterImage(String posterImage) {
@@ -85,8 +100,8 @@ public class Movie implements Parcelable {
 
     // Code for Parcels
     private Movie(Parcel p) {
+        movieId = p.readInt();
         movieTitle = p.readString();
-        originalTitle = p.readString();
         posterImage = p.readString();
         plot = p.readString();
         rating = p.readDouble();
@@ -101,8 +116,8 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(movieId);
         parcel.writeString(movieTitle);
-        parcel.writeString(originalTitle);
         parcel.writeString(posterImage);
         parcel.writeString(plot);
         parcel.writeDouble(rating);
