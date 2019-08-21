@@ -116,10 +116,26 @@ public class DetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageSelected(int i) {
-                Toast.makeText(DetailActivity.this, "Page "+ i + " is selected.", Toast.LENGTH_SHORT).show();
+            public void onPageSelected(int position) {
+                Toast.makeText(DetailActivity.this, "Page " + position + " is selected.", Toast.LENGTH_SHORT).show();
                 // TODO: Make methods for each fragment to update its view
                 // Similar to sortByTopRated() and ...ByPopularity() in MainActivityFragment (do this in the java fragments)
+                /* Make this a switch statement
+                switch (position) {
+                    case 0:
+                        Overview content
+                        break;
+                    case 1:
+                        Video content
+                        break;
+                    case 2:
+                        Reviews content
+                        break;
+                    default:
+                        Error message
+                        break;
+                } */
+
             }
 
             @Override
