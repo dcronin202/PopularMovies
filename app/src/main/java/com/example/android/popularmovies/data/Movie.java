@@ -29,6 +29,8 @@ public class Movie implements Parcelable {
     @SerializedName("popularity")
     private double popularity;
 
+    private String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
+
     public Movie() {
         }
 
@@ -58,8 +60,7 @@ public class Movie implements Parcelable {
     }
 
     public String getPosterImage() {
-        // TODO make url a constant
-        return "https://image.tmdb.org/t/p/w185/" + posterImage;
+        return moviePosterPath + posterImage;
     }
 
     public void setPosterImage(String posterImage) {
