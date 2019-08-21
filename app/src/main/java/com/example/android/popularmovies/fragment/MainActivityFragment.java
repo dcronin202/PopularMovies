@@ -1,9 +1,9 @@
 package com.example.android.popularmovies.fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +14,25 @@ import android.widget.TextView;
 import com.example.android.popularmovies.DetailActivity;
 import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.data.JsonUtils;
+import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
+import com.example.android.popularmovies.data.MovieResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /*
 * A fragment containing the list view of movie posters
 */
 public class MainActivityFragment extends Fragment {
+
+    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
     private MovieAdapter movieAdapter;
 
@@ -31,16 +40,18 @@ public class MainActivityFragment extends Fragment {
 
     private TextView errorMessage;
 
-    private ArrayList<Movie> movieList;
+    private JsonMovieApi jsonMovieApi;
+
+//    private ArrayList<Movie> movieList = new ArrayList<>();
 
     // TODO: API KEY GOES HERE
     private static final String apiKey = " ";
 
     // URL for movie data sorted by popularity
-    private static final String MOVIE_MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=" + apiKey;
+    private static final String MOVIE_MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/";
 
     // URL for movie data sorted by top rated
-    private static final String MOVIE_TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=" + apiKey;
+    private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
 
 
     public MainActivityFragment() {
@@ -49,11 +60,20 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        movieList = new ArrayList<Movie>();
+        // movieList = new ArrayList<Movie>();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MOVIE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        jsonMovieApi = retrofit.create(JsonMovieApi.class);
+
+        getMovies();
 
         // Start the AsyncTask to fetch the movie data
-        MovieAsyncTask task = new MovieAsyncTask();
-        task.execute(MOVIE_MOST_POPULAR_URL);
+        //MovieAsyncTask task = new MovieAsyncTask();
+        //task.execute(MOVIE_MOST_POPULAR_URL);
     }
 
     @Override
@@ -66,7 +86,7 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        movieAdapter = new MovieAdapter(getActivity(), movieList);
+        movieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
 
         // Get a reference to the ListView and attach this adapter to it
         gridView = rootView.findViewById(R.id.movie_grid);
@@ -96,49 +116,56 @@ public class MainActivityFragment extends Fragment {
 
     public void sortByPopularity() {
         // Start the AsyncTask to fetch the movie data sorted by popularity
-        MovieAsyncTask task = new MovieAsyncTask();
-        task.execute(MOVIE_MOST_POPULAR_URL);
+        //MovieAsyncTask task = new MovieAsyncTask();
+        //task.execute(MOVIE_MOST_POPULAR_URL);
     }
 
     public void sortByTopRated() {
         // Start the AsyncTask to fetch the movie data sorted by average ratings
-        MovieAsyncTask task = new MovieAsyncTask();
-        task.execute(MOVIE_TOP_RATED_URL);
+        //MovieAsyncTask task = new MovieAsyncTask();
+        //task.execute(MOVIE_TOP_RATED_URL);
     }
 
-    private class MovieAsyncTask extends AsyncTask<String, Void, List<Movie>> {
+    // TODO change to "popularMovies" and add a "topRatedMovies"
+    private void getMovies() {
 
-        /* This method runs on a background thread and performs the network request */
-        @Override
-        protected List<Movie> doInBackground(String... urls) {
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
+        Call<MovieResponse> call = jsonMovieApi.getPopularMovies(apiKey);
+
+        call.enqueue(new Callback<MovieResponse>() {
+
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                onMovieResponseReceived(response);
+
             }
 
-            List<Movie> result = JsonUtils.getMovieData(urls[0]);
-            return result;
-
-        }
-
-        /* This method runs on the main UI thread after the background work has been completed. */
-        @Override
-        protected void onPostExecute(List<Movie> data) {
-            // Clear the adapter of previous movie data
-            movieAdapter.clear();
-
-            // If there is a valid list of Movies, then add them to the adapter's data set. This will trigger the ListView to update.
-            if (data != null && data.size() > 0) {
-                gridView.setVisibility(View.VISIBLE);
-                errorMessage.setVisibility(View.GONE);
-                movieAdapter.addAll(data);
-
-            } else {
-                // If not, show error message
-                gridView.setVisibility(View.GONE);
-                errorMessage.setVisibility(View.VISIBLE);
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage());
             }
-        }
+        });
 
+    }
+
+    // Method for receiving a Movie response object and displaying its data
+    private void onMovieResponseReceived(Response<MovieResponse> response) {
+        movieAdapter.clear();
+
+        if (response.isSuccessful()) {
+
+            MovieResponse movieResponse = response.body();
+            List<Movie> movies = movieResponse.getMovieResults();
+            movieAdapter.addAll(movies);
+
+            gridView.setVisibility(View.VISIBLE);
+            errorMessage.setVisibility(View.GONE);
+
+        } else {
+            errorMessage.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.GONE);
+            Log.e(LOG_TAG, "Code: " + response.code());
+
+        }
     }
 
 }
