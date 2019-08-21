@@ -42,15 +42,11 @@ public class MainActivityFragment extends Fragment {
 
     private JsonMovieApi jsonMovieApi;
 
-//    private ArrayList<Movie> movieList = new ArrayList<>();
 
     // TODO: API KEY GOES HERE
     private static final String apiKey = " ";
 
-    // URL for movie data sorted by popularity
-    private static final String MOVIE_MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/";
-
-    // URL for movie data sorted by top rated
+    // URL for movie data
     private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
 
 
@@ -69,11 +65,8 @@ public class MainActivityFragment extends Fragment {
 
         jsonMovieApi = retrofit.create(JsonMovieApi.class);
 
-        getMovies();
+        getPopularMovies();
 
-        // Start the AsyncTask to fetch the movie data
-        //MovieAsyncTask task = new MovieAsyncTask();
-        //task.execute(MOVIE_MOST_POPULAR_URL);
     }
 
     @Override
@@ -115,19 +108,15 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void sortByPopularity() {
-        // Start the AsyncTask to fetch the movie data sorted by popularity
-        //MovieAsyncTask task = new MovieAsyncTask();
-        //task.execute(MOVIE_MOST_POPULAR_URL);
+        getPopularMovies();
     }
 
     public void sortByTopRated() {
-        // Start the AsyncTask to fetch the movie data sorted by average ratings
-        //MovieAsyncTask task = new MovieAsyncTask();
-        //task.execute(MOVIE_TOP_RATED_URL);
+        getTopRatedMovies();
     }
 
-    // TODO change to "popularMovies" and add a "topRatedMovies"
-    private void getMovies() {
+    // Method for retrieving Popular movies
+    private void getPopularMovies() {
 
         Call<MovieResponse> call = jsonMovieApi.getPopularMovies(apiKey);
 
@@ -142,9 +131,28 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Log.e(LOG_TAG, t.getMessage());
+
             }
         });
+    }
 
+    // Method for retrieving Top Rated Movies
+    private void getTopRatedMovies() {
+
+        Call<MovieResponse> call = jsonMovieApi.getTopRatedMovies(apiKey);
+
+        call.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                onMovieResponseReceived(response);
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage());
+
+            }
+        });
     }
 
     // Method for receiving a Movie response object and displaying its data
