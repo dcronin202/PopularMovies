@@ -56,7 +56,6 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // movieList = new ArrayList<Movie>();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MOVIE_URL)
