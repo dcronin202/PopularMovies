@@ -74,10 +74,6 @@ public class DetailActivity extends AppCompatActivity {
                 .load(movie.getPosterImage())
                 .into(moviePoster);
 
-        // Original Title
-        TextView originalTitle = findViewById(R.id.original_title);
-        originalTitle.setText(movie.getOriginalTitle());
-
         // Year - reformatted original String input to display MMMM yyyy format
         String releaseDate = movie.getReleaseDate();
         SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
