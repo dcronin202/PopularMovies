@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,6 +84,17 @@ public class DetailActivity extends AppCompatActivity {
 
         getMovieReviews();
         getMovieVideos();
+
+
+        Button videosButton = (Button) findViewById(R.id.button_videos);
+        videosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent videoIntent = new Intent(DetailActivity.this, VideosActivity.class);
+                videoIntent.putExtra("Videos", "This is a test.");
+                startActivity(videoIntent);
+            }
+        });
 
     }
 
