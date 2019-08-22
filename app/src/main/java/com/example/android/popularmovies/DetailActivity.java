@@ -7,10 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.adapter.MoviePagerAdapter;
 import com.example.android.popularmovies.data.Movie;
+import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.fragment.MovieOverviewFragment;
 import com.example.android.popularmovies.fragment.MovieReviewsFragment;
 import com.example.android.popularmovies.fragment.MovieVideosFragment;
@@ -29,6 +29,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    private Movie movieDetails;
+
+    private MovieReviews movieReviews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Movie movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
+        movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
         if (movieDetails != null) {
 
@@ -96,52 +100,22 @@ public class DetailActivity extends AppCompatActivity {
         TextView averageRating = findViewById(R.id.average_rating);
         averageRating.setText(avgMovieRating);
 
-        // Plot Summary
-        TextView plotSummary = findViewById(R.id.plot_summary);
-        plotSummary.setText(movie.getPlot());
-
     }
 
     //Adds fragments to MoviePagerAdapter
     private void setupViewPager(ViewPager viewPager) {
-        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MovieOverviewFragment(), getString(R.string.tab_overview));
+        final MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+
+        // Passing in movieDetails so views are immediately visible
+        MovieOverviewFragment movieOverviewFragment = new MovieOverviewFragment();
+        MovieReviewsFragment movieReviewsFragment = new MovieReviewsFragment();
+
+        movieOverviewFragment.setMovie(movieDetails);
+        movieReviewsFragment.setReview(movieDetails);
+
+        adapter.addFragment(movieOverviewFragment, getString(R.string.tab_overview));
         adapter.addFragment(new MovieVideosFragment(), getString(R.string.tab_videos));
-        adapter.addFragment(new MovieReviewsFragment(), getString(R.string.tab_reviews));
-
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Toast.makeText(DetailActivity.this, "Page " + position + " is selected.", Toast.LENGTH_SHORT).show();
-                // TODO: Make methods for each fragment to update its view
-                // Similar to sortByTopRated() and ...ByPopularity() in MainActivityFragment (do this in the java fragments)
-                /* Make this a switch statement
-                switch (position) {
-                    case 0:
-                        Overview content
-                        break;
-                    case 1:
-                        Video content
-                        break;
-                    case 2:
-                        Reviews content
-                        break;
-                    default:
-                        Error message
-                        break;
-                } */
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-        });
+        adapter.addFragment(movieReviewsFragment, getString(R.string.tab_reviews));
 
         viewPager.setAdapter(adapter);
 
