@@ -43,16 +43,6 @@ public class Movie implements Parcelable {
     private String youTubeVideoPath = "https://www.youtube.com/watch?v=";
 
 
-    // Movie Reviews URL
-    @SerializedName("author")
-    private String reviewAuthor;
-
-    @SerializedName("content")
-    private String reviewContent;
-
-    @SerializedName("url")
-    private String reviewUrl;
-
     public Movie() {
         }
 
@@ -139,32 +129,6 @@ public class Movie implements Parcelable {
         this.videoUrlKey = videoUrlKey;
     }
 
-    // Reviews
-    public String getReviewAuthor() {
-        return reviewAuthor;
-    }
-
-    public void setReviewAuthor(String reviewAuthor) {
-        this.reviewAuthor = reviewAuthor;
-    }
-
-    public String getReviewContent() {
-        return reviewContent;
-    }
-
-    public void setReviewContent(String reviewContent) {
-        this.reviewContent = reviewContent;
-    }
-
-    public String getReviewUrl() {
-        return reviewUrl;
-    }
-
-    public void setReviewUrl(String reviewUrl) {
-        this.reviewUrl = reviewUrl;
-    }
-
-
     // Code for Parcels
     private Movie(Parcel p) {
         movieId = p.readInt();
@@ -178,10 +142,6 @@ public class Movie implements Parcelable {
         videoName = p.readString();
         videoUrlKey = p.readString();
         youTubeVideoPath = p.readString();
-
-        reviewAuthor = p.readString();
-        reviewContent = p.readString();
-        reviewUrl = p.readString();
     }
 
     @Override
@@ -202,10 +162,6 @@ public class Movie implements Parcelable {
         parcel.writeString(videoName);
         parcel.writeString(videoUrlKey);
         parcel.writeString(youTubeVideoPath);
-
-        parcel.writeString(reviewAuthor);
-        parcel.writeString(reviewContent);
-        parcel.writeString(reviewUrl);
 
     }
 
