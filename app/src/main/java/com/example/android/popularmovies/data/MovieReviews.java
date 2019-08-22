@@ -10,9 +10,6 @@ public class MovieReviews {
     @SerializedName("content")
     private String reviewContent;
 
-    @SerializedName("url")
-    private String reviewUrl;
-
 
     public String getReviewAuthor() {
         return reviewAuthor;
@@ -28,14 +25,6 @@ public class MovieReviews {
 
     public void setReviewContent(String reviewContent) {
         this.reviewContent = reviewContent;
-    }
-
-    public String getReviewUrl() {
-        return reviewUrl;
-    }
-
-    public void setReviewUrl(String reviewUrl) {
-        this.reviewUrl = reviewUrl;
     }
 
 }
