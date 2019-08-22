@@ -8,9 +8,9 @@
     <string name="detail_release_date">Release Date:</string>
     <string name="detail_avg_rating">Average Rating:</string>
     <string name="detail_plot_summary">Overview:</string>
-    <string name="detail_review">Reviews:</string>
+    <string name="detail_review">Reviews</string>
     <string name="detail_review_content">Review Content:</string>
-    <string name="detail_videos">Videos:</string>
+    <string name="detail_videos">Related Videos</string>
 
     <!-- Menu Options -->
     <string name="menu_most_popular">Most Popular</string>
