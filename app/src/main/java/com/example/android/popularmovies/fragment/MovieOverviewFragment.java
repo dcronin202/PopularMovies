@@ -43,7 +43,9 @@ public class MovieOverviewFragment extends Fragment {
     }
 
     private void updateOverview(Movie movie) {
-        overview.setText(movie.getPlot());
+        if (movie != null) {
+            overview.setText(movie.getPlot());
+        }
     }
 
 }
