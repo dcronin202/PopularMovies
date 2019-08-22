@@ -19,7 +19,7 @@ public class Movie implements Parcelable {
     private String posterImage;
 
     @SerializedName("overview")
-    private String plot;
+    private String overview;
 
     @SerializedName("vote_average")
     private double rating;
@@ -33,23 +33,13 @@ public class Movie implements Parcelable {
     private String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
 
 
-    // Movie Videos URL
-    @SerializedName("name")
-    private String videoName;
-
-    @SerializedName("key")
-    private String videoUrlKey;
-
-    private String youTubeVideoPath = "https://www.youtube.com/watch?v=";
-
-
     public Movie() {
         }
 
     public Movie(String movieTitle, String posterImage, String plot, double rating, String releaseDate, double popularity) {
         this.movieTitle = movieTitle;
         this.posterImage = posterImage;
-        this.plot = plot;
+        this.overview = overview;
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.popularity = popularity;
@@ -80,12 +70,12 @@ public class Movie implements Parcelable {
         this.posterImage = posterImage;
     }
 
-    public String getPlot() {
-        return plot;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setPlot(String plot) {
-        this.plot = plot;
+    public void setOverview(String plot) {
+        this.overview = overview;
     }
 
     public double getRating () {
@@ -112,36 +102,17 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
     }
 
-    // Videos
-    public String getVideoName() {
-        return videoName;
-    }
-
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
-    }
-
-    public String getMovieVideos() {
-        return youTubeVideoPath + videoUrlKey;
-    }
-
-    public void setMovieVideos(String movieVideo) {
-        this.videoUrlKey = videoUrlKey;
-    }
 
     // Code for Parcels
     private Movie(Parcel p) {
         movieId = p.readInt();
         movieTitle = p.readString();
         posterImage = p.readString();
-        plot = p.readString();
+        overview = p.readString();
         rating = p.readDouble();
         releaseDate = p.readString();
         popularity = p.readDouble();
 
-        videoName = p.readString();
-        videoUrlKey = p.readString();
-        youTubeVideoPath = p.readString();
     }
 
     @Override
@@ -154,14 +125,10 @@ public class Movie implements Parcelable {
         parcel.writeInt(movieId);
         parcel.writeString(movieTitle);
         parcel.writeString(posterImage);
-        parcel.writeString(plot);
+        parcel.writeString(overview);
         parcel.writeDouble(rating);
         parcel.writeString(releaseDate);
         parcel.writeDouble(popularity);
-
-        parcel.writeString(videoName);
-        parcel.writeString(videoUrlKey);
-        parcel.writeString(youTubeVideoPath);
 
     }
 
