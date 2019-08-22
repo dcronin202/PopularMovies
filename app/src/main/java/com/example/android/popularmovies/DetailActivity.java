@@ -111,7 +111,6 @@ public class DetailActivity extends AppCompatActivity {
         MovieReviewsFragment movieReviewsFragment = new MovieReviewsFragment();
 
         movieOverviewFragment.setMovie(movieDetails);
-        movieReviewsFragment.setReview(movieDetails);
 
         adapter.addFragment(movieOverviewFragment, getString(R.string.tab_overview));
         adapter.addFragment(new MovieVideosFragment(), getString(R.string.tab_videos));
