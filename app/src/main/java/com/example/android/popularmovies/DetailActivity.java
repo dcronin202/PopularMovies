@@ -2,36 +2,53 @@ package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.popularmovies.adapter.MoviePagerAdapter;
+import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
+import com.example.android.popularmovies.data.MovieResponse;
 import com.example.android.popularmovies.data.MovieReviews;
-import com.example.android.popularmovies.fragment.MovieOverviewFragment;
-import com.example.android.popularmovies.fragment.MovieReviewsFragment;
-import com.example.android.popularmovies.fragment.MovieVideosFragment;
+import com.example.android.popularmovies.data.MovieReviewsResponse;
+import com.example.android.popularmovies.data.MovieVideos;
+import com.example.android.popularmovies.data.MovieVideosResponse;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
+
     public static final String MOVIE_DETAILS = "movie";
-
-    private MoviePagerAdapter mMoviePagerAdapter;
-
-    private ViewPager mViewPager;
 
     private Movie movieDetails;
 
-    private MovieReviews movieReviews;
+    private static int movieId;
+
+    private JsonMovieApi jsonMovieApi;
+
+    private TextView movieReviewResult;
+
+    private TextView movieVideoResult;
+
+    // TODO: API KEY GOES HERE
+    private static final String apiKey = " ";
+
+    // URL for movie data
+    private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
 
 
     @Override
@@ -53,17 +70,29 @@ public class DetailActivity extends AppCompatActivity {
             closeOnError();
         }
 
-        //Set up ViewPager with the MoviePagerAdapter
-        mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        setupViewPager(mViewPager);
+        movieReviewResult = findViewById(R.id.movie_review_result);
+        movieVideoResult = findViewById(R.id.movie_video_result);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MOVIE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        jsonMovieApi = retrofit.create(JsonMovieApi.class);
+
+        getMovieReviews();
+        getMovieVideos();
+
     }
 
     private void closeOnError() {
         finish();
+    }
+
+    // Get current movie ID
+    private int populateMovieId(Movie movie) {
+        int movieId = movie.getMovieId();
+        return movieId;
     }
 
     private void populateMovieDetails(Movie movie) {
@@ -100,24 +129,93 @@ public class DetailActivity extends AppCompatActivity {
         TextView averageRating = findViewById(R.id.average_rating);
         averageRating.setText(avgMovieRating);
 
+        // Plot Overview
+        TextView movieOverview = findViewById(R.id.movie_overview);
+        movieOverview.setText(movie.getOverview());
+
     }
 
-    //Adds fragments to MoviePagerAdapter
-    private void setupViewPager(ViewPager viewPager) {
-        final MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+    private void getMovieReviews() {
 
-        // Passing in movieDetails so views are immediately visible
-        MovieOverviewFragment movieOverviewFragment = new MovieOverviewFragment();
-        MovieReviewsFragment movieReviewsFragment = new MovieReviewsFragment();
+        movieId = populateMovieId(movieDetails);
 
-        movieOverviewFragment.setMovie(movieDetails);
-        movieReviewsFragment.setReview(movieDetails);
+        Call<MovieReviewsResponse> call = jsonMovieApi.getMovieReviews(movieId, apiKey);
 
-        adapter.addFragment(movieOverviewFragment, getString(R.string.tab_overview));
-        adapter.addFragment(new MovieVideosFragment(), getString(R.string.tab_videos));
-        adapter.addFragment(movieReviewsFragment, getString(R.string.tab_reviews));
+        call.enqueue(new Callback<MovieReviewsResponse>() {
+            @Override
+            public void onResponse(Call<MovieReviewsResponse> call, Response<MovieReviewsResponse> response) {
+                onMovieReviewResponseReceived(response);
+                // TODO: Add a string message "Currently no reviews for this movie" if no data is returned
+            }
 
-        viewPager.setAdapter(adapter);
+            @Override
+            public void onFailure(Call<MovieReviewsResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage());
+            }
+        });
+
+    }
+
+    private void getMovieVideos() {
+
+        movieId = populateMovieId(movieDetails);
+
+        Call<MovieVideosResponse> call = jsonMovieApi.getMovieVideos(movieId, apiKey);
+
+        call.enqueue(new Callback<MovieVideosResponse>() {
+            @Override
+            public void onResponse(Call<MovieVideosResponse> call, Response<MovieVideosResponse> response) {
+                onMovieVideoResponseReceived(response);
+                // TODO: Add a string message "Currently no videos for this movie" if no data is returned
+            }
+
+            @Override
+            public void onFailure(Call<MovieVideosResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.getMessage());
+            }
+        });
+
+    }
+
+    private void onMovieReviewResponseReceived(Response<MovieReviewsResponse> response) {
+
+        if (response.isSuccessful()) {
+
+            MovieReviewsResponse movieReviewsResponse = response.body();
+            List<MovieReviews> movieReviews = movieReviewsResponse.getReviewResults();
+            for (MovieReviews movieReview : movieReviews) {
+                String content = "";
+                content += "Author: " + movieReview.getReviewAuthor() + "\n";
+                content += "Content: " + movieReview.getReviewContent() + "\n";
+
+                movieReviewResult.append(content);
+            }
+
+        } else {
+            Log.e(LOG_TAG, "Code: " + response.code());
+
+        }
+
+    }
+
+    private void onMovieVideoResponseReceived(Response<MovieVideosResponse> response) {
+
+        if (response.isSuccessful()) {
+
+            MovieVideosResponse movieVideoResponse = response.body();
+            List<MovieVideos> movieVideos = movieVideoResponse.getVideoResults();
+            for (MovieVideos movieVideo : movieVideos) {
+                String content = "";
+                content += "Name: " + movieVideo.getVideoName() + "\n";
+                content += "URL: " + movieVideo.getMovieVideos() + "\n\n";
+
+                movieVideoResult.append(content);
+            }
+
+        } else {
+            Log.e(LOG_TAG, "Code: " + response.code());
+
+        }
 
     }
 
