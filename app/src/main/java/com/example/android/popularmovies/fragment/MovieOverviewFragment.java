@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,19 +17,33 @@ public class MovieOverviewFragment extends Fragment {
 
     private TextView overview;
 
+    private Movie movie;
+
+
+    public MovieOverviewFragment() {
+        super();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.movie_overview_fragment, container, false);
 
-        Movie movie = new Movie();
-
         overview = view.findViewById(R.id.overview);
-        overview.setText(movie.getPlot());
+
+        updateOverview(movie);
 
         return view;
 
+    }
+
+    // Setter for the Movie object to load the details of the movie in the onCreateView method.
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    private void updateOverview(Movie movie) {
+        overview.setText(movie.getPlot());
     }
 
 }
