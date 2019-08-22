@@ -3,7 +3,6 @@ package com.example.android.popularmovies.data;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 public interface JsonMovieApi {
 
@@ -17,6 +16,6 @@ public interface JsonMovieApi {
     Call<MovieResponse> getMovieVideos();
 
     @GET("movie/{id}/reviews")
-    Call<MovieResponse> getMovieReviews();
+    Call<MovieReviews> getMovieReviews();
 
 }
