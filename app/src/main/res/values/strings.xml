@@ -11,6 +11,7 @@
     <string name="detail_review">Reviews</string>
     <string name="detail_review_content">Review Content:</string>
     <string name="detail_videos">Related Videos</string>
+    <string name="detail_favorites">Mark as Favorite</string>
 
     <!-- Menu Options -->
     <string name="menu_most_popular">Most Popular</string>
