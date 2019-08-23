@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.data.MovieVideos;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class VideosActivity extends AppCompatActivity {
 
     public static final String VIDEO_DETAILS = "video";
@@ -18,8 +23,11 @@ public class VideosActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String message = intent.getStringExtra("Videos");
+        //String message = intent.getStringExtra("Videos");
+        ArrayList<MovieVideos> videoList = intent.getParcelableArrayListExtra(VIDEO_DETAILS);
         TextView textView = (TextView) findViewById(R.id.video_activity_textview);
-        textView.setText(message);
+        if (videoList != null && videoList.size() > 0) {
+            textView.setText(videoList.get(0).getVideoName());
+        }
     }
 }
