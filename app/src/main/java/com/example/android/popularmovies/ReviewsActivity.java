@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.data.MovieReviews;
+
+import java.util.ArrayList;
+
 public class ReviewsActivity extends AppCompatActivity {
 
     public static final String REVIEW_DETAILS = "reviews";
@@ -18,9 +22,11 @@ public class ReviewsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String message = intent.getStringExtra("Reviews");
+        ArrayList<MovieReviews> reviewsList = intent.getParcelableArrayListExtra(REVIEW_DETAILS);
         TextView textView = (TextView) findViewById(R.id.review_activity_textview);
-        textView.setText(message);
+        if (reviewsList != null && reviewsList.size() > 0) {
+            textView.setText(reviewsList.get(0).getReviewContent());
+        }
 
     }
 }
