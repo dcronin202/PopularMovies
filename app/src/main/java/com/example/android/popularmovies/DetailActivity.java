@@ -118,7 +118,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         // RecyclerView method
-        titleList();
+        videoTitleList();
 
     }
 
@@ -261,7 +261,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private void titleList() {
+    private void videoTitleList() {
         mTestVideoTitles.add("Official Trailer");
         mTestVideoTitles.add("Official New Trailer");
         mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019) Clip “Director Conversation” - Keanu Reeves");
