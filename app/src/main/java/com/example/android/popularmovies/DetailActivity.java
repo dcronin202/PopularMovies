@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.adapter.RecyclerViewAdapter;
 import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieResponse;
@@ -43,6 +46,8 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<MovieVideos> videoDetails;
 
     private ArrayList<MovieReviews> reviewDetails;
+
+    private ArrayList<String> mTestVideoTitles = new ArrayList<>();
 
     private static int movieId;
 
@@ -97,7 +102,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent videoIntent = new Intent(DetailActivity.this, VideosActivity.class);
-                // TODO: Figure out why only first line of array is showing
                 videoIntent.putParcelableArrayListExtra(VideosActivity.VIDEO_DETAILS, videoDetails);
                 startActivity(videoIntent);
             }
@@ -108,10 +112,13 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent reviewIntent = new Intent(DetailActivity.this, ReviewsActivity.class);
-                reviewIntent.putExtra("Reviews", "Reviews coming soon.");
+                reviewIntent.putExtra(ReviewsActivity.REVIEW_DETAILS, reviewDetails);
                 startActivity(reviewIntent);
             }
         });
+
+        // RecyclerView method
+        titleList();
 
     }
 
@@ -217,8 +224,8 @@ public class DetailActivity extends AppCompatActivity {
         if (response.isSuccessful()) {
 
             MovieReviewsResponse movieReviewsResponse = response.body();
-            List<MovieReviews> movieReviews = movieReviewsResponse.getReviewResults();
-            for (MovieReviews movieReview : movieReviews) {
+            reviewDetails = (ArrayList<MovieReviews>) movieReviewsResponse.getReviewResults();
+            for (MovieReviews movieReview : reviewDetails) {
                 String content = "";
                 content += "Author: " + movieReview.getReviewAuthor() + "\n";
                 content += "Content: " + movieReview.getReviewContent() + "\n";
@@ -252,6 +259,30 @@ public class DetailActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void titleList() {
+        mTestVideoTitles.add("Official Trailer");
+        mTestVideoTitles.add("Official New Trailer");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019) Clip “Director Conversation” - Keanu Reeves");
+        mTestVideoTitles.add("John Wick: Chapter 3 – Parabellum (2019 Movie) Official TV Spot “Guns” – Keanu Reeves, Halle Berry");
+        mTestVideoTitles.add("John Wick: Chapter 3 – Parabellum (2019 Movie) Official TV Spot “Bounty” – Keanu Reeves, Halle Berry");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019) Official TV Spot “Watching” - Keanu Reeves, Halle Berry");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019 Movie) Official Clip “Taxi” – Keanu Reeves, Halle Berry");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019) Official Clip “Management” – Keanu Reeves, Halle Berry");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019) Official Behind the Scenes “Art of Action” – Keanu Reeves");
+        mTestVideoTitles.add("John Wick: Chapter 3 - Parabellum (2019 Movie) “Happy National Puppy Day” - Keanu Reeves");
+
+        initRecyclerView();
+
+    }
+
+    private void initRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mTestVideoTitles);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 }
