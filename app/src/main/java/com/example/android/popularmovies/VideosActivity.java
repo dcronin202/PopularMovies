@@ -23,10 +23,10 @@ public class VideosActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        //String message = intent.getStringExtra("Videos");
         ArrayList<MovieVideos> videoList = intent.getParcelableArrayListExtra(VIDEO_DETAILS);
         TextView textView = (TextView) findViewById(R.id.video_activity_textview);
         if (videoList != null && videoList.size() > 0) {
+            // TODO: Will need to iterate through array of videos
             textView.setText(videoList.get(0).getVideoName());
         }
     }
