@@ -8,17 +8,18 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     android:background="#212121"
-    tools:context=".MainActivity">
+    tools:context=".DetailActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/movie_review_result"
+            android:id="@+id/review_activity_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#fff"
+            android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
