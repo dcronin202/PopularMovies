@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +40,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private Movie movieDetails;
 
+    private ArrayList<MovieVideos> videoDetails;
+
+    private ArrayList<MovieReviews> reviewDetails;
+
     private static int movieId;
 
     private JsonMovieApi jsonMovieApi;
@@ -47,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView movieVideoResult;
 
     // TODO: API KEY GOES HERE
-    private static final String apiKey = " ";
+    private static final String apiKey = "301ade02190b07969335c116b1456868";
 
     // URL for movie data
     private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
@@ -91,11 +97,27 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent videoIntent = new Intent(DetailActivity.this, VideosActivity.class);
-                videoIntent.putExtra("Videos", "This is a test.");
+                // TODO: Figure out why only first line of array is showing
+                videoIntent.putParcelableArrayListExtra(VideosActivity.VIDEO_DETAILS, videoDetails);
                 startActivity(videoIntent);
             }
         });
 
+        Button reviewsButton = (Button) findViewById(R.id.button_reviews);
+        reviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent reviewIntent = new Intent(DetailActivity.this, ReviewsActivity.class);
+                reviewIntent.putExtra("Reviews", "Reviews coming soon.");
+                startActivity(reviewIntent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void closeOnError() {
@@ -216,8 +238,8 @@ public class DetailActivity extends AppCompatActivity {
         if (response.isSuccessful()) {
 
             MovieVideosResponse movieVideoResponse = response.body();
-            List<MovieVideos> movieVideos = movieVideoResponse.getVideoResults();
-            for (MovieVideos movieVideo : movieVideos) {
+            videoDetails = (ArrayList<MovieVideos>) movieVideoResponse.getVideoResults();
+            for (MovieVideos movieVideo : videoDetails) {
                 String content = "";
                 content += "Name: " + movieVideo.getVideoName() + "\n";
                 content += "URL: " + movieVideo.getMovieVideos() + "\n\n";
