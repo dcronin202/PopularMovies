@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
 
-    // Primary URL
     @SerializedName("id")
     private int movieId;
 
@@ -45,7 +44,6 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
     }
 
-    // Main
     public int getMovieId() {
         return movieId;
     }
