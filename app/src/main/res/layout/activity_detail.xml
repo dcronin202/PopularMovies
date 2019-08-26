@@ -81,26 +81,19 @@
                         android:paddingBottom="16dp"
                         android:textColor="#fff"/>
 
-                    <Button
+                    <CheckBox
                         android:id="@+id/button_favorites"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_favorites"
+                        android:textColor="#fff"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp" />
+                        android:layout_marginRight="16dp"
+                        android:checked="false"/>
 
                 </LinearLayout>
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/detail_plot_summary"
-                android:textColor="#fff"/>
 
             <TextView
                 android:id="@+id/movie_overview"
@@ -111,6 +104,7 @@
                 android:paddingBottom="16dp"
                 android:textColor="#fff"/>
 
+            <!--
             <Button
                 android:id="@+id/button_videos"
                 android:layout_width="wrap_content"
@@ -127,15 +121,6 @@
                 android:text="@string/detail_review"
                 android:layout_gravity="center" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/detail_review"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/movie_review_result"
@@ -145,17 +130,18 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:textColor="#fff"/>
+                -->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp"
+                android:paddingBottom="8dp"
                 android:text="@string/detail_videos"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-
+            <!--
             <TextView
                 android:id="@+id/movie_video_result"
                 android:layout_width="wrap_content"
@@ -164,21 +150,27 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:textColor="#fff"/>
+                -->
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_videos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:text="Recycler View"
+                android:paddingBottom="8dp"
+                android:text="@string/detail_review"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
+                android:id="@+id/recyclerview_reviews"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
