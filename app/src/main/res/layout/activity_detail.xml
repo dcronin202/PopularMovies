@@ -82,7 +82,7 @@
                         android:textColor="#fff"/>
 
                     <CheckBox
-                        android:id="@+id/button_favorites"
+                        android:id="@+id/checkbox_favorites"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_favorites"
@@ -104,34 +104,6 @@
                 android:paddingBottom="16dp"
                 android:textColor="#fff"/>
 
-            <!--
-            <Button
-                android:id="@+id/button_videos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_videos"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
-
-            <Button
-                android:id="@+id/button_reviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_review"
-                android:layout_gravity="center" />
-
-
-            <TextView
-                android:id="@+id/movie_review_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:textColor="#fff"/>
-                -->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,16 +113,6 @@
                 android:text="@string/detail_videos"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-            <!--
-            <TextView
-                android:id="@+id/movie_video_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:textColor="#fff"/>
-                -->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_videos"
