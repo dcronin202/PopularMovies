@@ -24,11 +24,11 @@ public class MovieVideos implements Parcelable {
         this.videoName = videoName;
     }
 
-    public String getMovieVideos() {
-        return youTubeVideoPath + videoUrlKey;
+    public String getVideoUrlKey() {
+        return videoUrlKey; // removed youTubeVideoPath + videoUrlKey
     }
 
-    public void setMovieVideos(String videoUrlKey) {
+    public void setVideoUrlKey(String videoUrlKey) {
         this.videoUrlKey = videoUrlKey;
     }
 
