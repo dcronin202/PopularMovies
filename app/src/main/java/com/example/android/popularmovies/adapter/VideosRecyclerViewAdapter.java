@@ -1,7 +1,10 @@
 package com.example.android.popularmovies.adapter;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,17 +24,14 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
 
     private static final String LOG_TAG = VideosRecyclerViewAdapter.class.getSimpleName();
 
-    //private ArrayList<String> mVideoTitle = new ArrayList<>();
     private ArrayList<MovieVideos> mMovieVideoTitle;
+    private ArrayList<MovieVideos> mVideoId;
     private Activity mContext;
 
-    /* public VideosRecyclerViewAdapter(Context mContext, ArrayList<String> mVideoTitle) {
-        this.mVideoTitle = mVideoTitle;
-        this.mContext = mContext;
-    } */
 
-    public VideosRecyclerViewAdapter(Activity mContext, ArrayList<MovieVideos> mMovieVideoTitle) {
+    public VideosRecyclerViewAdapter(Activity mContext, ArrayList<MovieVideos> mMovieVideoTitle, ArrayList<MovieVideos> mVideoId) {
         this.mMovieVideoTitle = mMovieVideoTitle;
+        this.mVideoId = mVideoId;
         this.mContext = mContext;
     }
 
@@ -44,18 +44,19 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int postion) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-        final MovieVideos movieVideo = mMovieVideoTitle.get(postion);
+        final MovieVideos movieVideo = mMovieVideoTitle.get(position);
+        //final MovieVideos videoId = mVideoId.get(position);
 
-        // viewHolder.videoTitle.setText(mVideoTitle.get(postion));
         viewHolder.videoTitle.setText(movieVideo.getVideoName());
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(mContext, mVideoTitle.get(postion), Toast.LENGTH_SHORT).show();
                 Toast.makeText(mContext, movieVideo.getVideoName(), Toast.LENGTH_SHORT).show();
+                //launchMovieVideo(mContext, videoId.getVideoUrlKey());
+
             }
         });
 
@@ -76,10 +77,21 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
         notifyDataSetChanged();
     }
 
-    // TODO: Start here tomorrow & pass in the YouTube intent
+    /* TODO: Pass in the YouTube intent
     private void launchMovieVideo(MovieVideos videoAtPosition) {
         Intent intent = new Intent(this.mContext, DetailActivity.class);
-        //
+    } */
+
+    public static void launchMovieVideo(Context context, String id) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + id));
+
+        try {
+            context.startActivity(appIntent);
+
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
 
     }
 
