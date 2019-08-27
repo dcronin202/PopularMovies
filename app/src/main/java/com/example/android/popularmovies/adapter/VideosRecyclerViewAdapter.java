@@ -24,14 +24,13 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
 
     private static final String LOG_TAG = VideosRecyclerViewAdapter.class.getSimpleName();
 
-    private ArrayList<MovieVideos> mMovieVideoTitle;
-    private ArrayList<MovieVideos> mVideoId;
+    private ArrayList<MovieVideos> mMovieVideos;
     private Activity mContext;
 
 
-    public VideosRecyclerViewAdapter(Activity mContext, ArrayList<MovieVideos> mMovieVideoTitle, ArrayList<MovieVideos> mVideoId) {
-        this.mMovieVideoTitle = mMovieVideoTitle;
-        this.mVideoId = mVideoId;
+
+    public VideosRecyclerViewAdapter(Activity mContext, ArrayList<MovieVideos> mMovieVideoTitle) {
+        this.mMovieVideos = mMovieVideoTitle;
         this.mContext = mContext;
     }
 
@@ -46,8 +45,7 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-        final MovieVideos movieVideo = mMovieVideoTitle.get(position);
-        //final MovieVideos videoId = mVideoId.get(position);
+        final MovieVideos movieVideo = mMovieVideos.get(position);
 
         viewHolder.videoTitle.setText(movieVideo.getVideoName());
 
@@ -55,7 +53,7 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, movieVideo.getVideoName(), Toast.LENGTH_SHORT).show();
-                //launchMovieVideo(mContext, videoId.getVideoUrlKey());
+                launchMovieVideo(mContext, movieVideo.getVideoUrlKey());
 
             }
         });
@@ -65,22 +63,18 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
     @Override
     public int getItemCount() {
         //return mVideoTitle.size();
-        if (mMovieVideoTitle == null) {
+        if (mMovieVideos == null) {
             return 0;
         } else {
-            return mMovieVideoTitle.size();
+            return mMovieVideos.size();
         }
     }
 
     public void updateVideoList(ArrayList<MovieVideos> movieVideoList) {
-        this.mMovieVideoTitle = movieVideoList;
+        this.mMovieVideos = movieVideoList;
         notifyDataSetChanged();
     }
 
-    /* TODO: Pass in the YouTube intent
-    private void launchMovieVideo(MovieVideos videoAtPosition) {
-        Intent intent = new Intent(this.mContext, DetailActivity.class);
-    } */
 
     public static void launchMovieVideo(Context context, String id) {
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
