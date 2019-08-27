@@ -114,6 +114,10 @@ public class MainActivityFragment extends Fragment {
         getTopRatedMovies();
     }
 
+    public void sortByFavorites() {
+        // getFavoriteMovies();
+    }
+
     // Method for retrieving Popular movies
     private void getPopularMovies() {
 
