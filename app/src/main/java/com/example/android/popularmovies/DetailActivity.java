@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +18,9 @@ import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.data.MovieReviewsResponse;
 import com.example.android.popularmovies.data.MovieVideos;
 import com.example.android.popularmovies.data.MovieVideosResponse;
+import com.example.android.popularmovies.database.MovieFavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,19 +41,19 @@ public class DetailActivity extends AppCompatActivity {
 
     private Movie movieDetails;
 
+
     private ArrayList<MovieVideos> videoDetails;
 
-    private ArrayList<MovieReviews> reviewAuthor;
-
-    private ArrayList<MovieReviews> reviewContent;
+    private ArrayList<MovieReviews> reviewDetails;
 
     private static int movieId;
 
     private JsonMovieApi jsonMovieApi;
 
     private VideosRecyclerViewAdapter videoAdapter;
-
     private ReviewsRecyclerViewAdapter reviewAdapter;
+
+    private MovieFavoritesDatabase favoritesDatabase;
 
     // TODO: API KEY GOES HERE
     private static final String apiKey = " ";
@@ -81,12 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MOVIE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        jsonMovieApi = retrofit.create(JsonMovieApi.class);
+        jsonMovieApi = getRetrofitInstance().create(JsonMovieApi.class);
 
         /* Button videosButton = (Button) findViewById(R.id.button_videos);
         videosButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +108,13 @@ public class DetailActivity extends AppCompatActivity {
         videoTitleList();
         movieReviewList();
 
+    }
+
+    private static Retrofit getRetrofitInstance() {
+        return new Retrofit.Builder()
+                .baseUrl(MOVIE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
     @Override
@@ -175,9 +178,8 @@ public class DetailActivity extends AppCompatActivity {
         if (response.isSuccessful()) {
 
             MovieReviewsResponse movieReviewsResponse = response.body();
-            ArrayList<MovieReviews> reviewsAuthor = (ArrayList<MovieReviews>) movieReviewsResponse.getReviewResults();
-            ArrayList<MovieReviews> reviewsContent = (ArrayList<MovieReviews>) movieReviewsResponse.getReviewResults();
-            reviewAdapter.updateReviewList(reviewsAuthor, reviewsContent);
+            ArrayList<MovieReviews> reviews = (ArrayList<MovieReviews>) movieReviewsResponse.getReviewResults();
+            reviewAdapter.updateReviewList(reviews);
 
         } else {
             Log.e(LOG_TAG, "Code: " + response.code());
@@ -256,10 +258,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private void initReviewRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
-        reviewAdapter = new ReviewsRecyclerViewAdapter(this, reviewAuthor, reviewContent);
+        reviewAdapter = new ReviewsRecyclerViewAdapter(this, reviewDetails);
         recyclerView.setAdapter(reviewAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
 }
