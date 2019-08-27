@@ -1,41 +1,64 @@
 package com.example.android.popularmovies.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
+@Entity(tableName = "favorites")
 public class Movie implements Parcelable {
 
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
+    @Expose
     private int movieId;
 
     @SerializedName("title")
+    @Expose
     private String movieTitle;
 
     @SerializedName("poster_path")
+    @Expose
     private String posterImage;
 
     @SerializedName("overview")
+    @Expose
     private String overview;
 
     @SerializedName("vote_average")
+    @Expose
     private double rating;
 
     @SerializedName("release_date")
+    @Expose
     private String releaseDate;
 
     @SerializedName("popularity")
+    @Expose
     private double popularity;
 
-    private String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
+    // private String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
 
-
+    @Ignore
     public Movie() {
         }
 
-    public Movie(String movieTitle, String posterImage, String plot, double rating, String releaseDate, double popularity) {
+    @Ignore
+    public Movie(String movieTitle, String posterImage, String overview, double rating, String releaseDate, double popularity) {
+        this.movieTitle = movieTitle;
+        this.posterImage = posterImage;
+        this.overview = overview;
+        this.rating = rating;
+        this.releaseDate = releaseDate;
+        this.popularity = popularity;
+    }
+
+    public Movie(int movieId, String movieTitle, String posterImage, String overview, double rating, String releaseDate, double popularity) {
+        this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.posterImage = posterImage;
         this.overview = overview;
@@ -60,8 +83,9 @@ public class Movie implements Parcelable {
         this.movieTitle = movieTitle;
     }
 
+    // TODO: Remove the hard-coded url when everything is working
     public String getPosterImage() {
-        return moviePosterPath + posterImage;
+        return "https://image.tmdb.org/t/p/w185/" + posterImage;  // deleted moviePosterPath +
     }
 
     public void setPosterImage(String posterImage) {
