@@ -1,24 +1,23 @@
 package com.example.android.popularmovies;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.adapter.VideosRecyclerViewAdapter;
 import com.example.android.popularmovies.adapter.ReviewsRecyclerViewAdapter;
-import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieReviews;
-import com.example.android.popularmovies.data.MovieReviewsResponse;
 import com.example.android.popularmovies.data.MovieVideos;
-import com.example.android.popularmovies.data.MovieVideosResponse;
 import com.example.android.popularmovies.database.MovieFavoritesDatabase;
+import com.example.android.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -27,11 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -40,26 +34,12 @@ public class DetailActivity extends AppCompatActivity {
     public static final String MOVIE_DETAILS = "movie";
 
     private Movie movieDetails;
-
-
-    private ArrayList<MovieVideos> videoDetails;
-
-    private ArrayList<MovieReviews> reviewDetails;
-
-    private static int movieId;
-
-    private JsonMovieApi jsonMovieApi;
+    private MovieDetailViewModel viewModel;
 
     private VideosRecyclerViewAdapter videoAdapter;
     private ReviewsRecyclerViewAdapter reviewAdapter;
 
     private MovieFavoritesDatabase favoritesDatabase;
-
-    // TODO: API KEY GOES HERE
-    private static final String apiKey = " ";
-
-    // URL for movie data
-    private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
 
 
     @Override
@@ -72,19 +52,20 @@ public class DetailActivity extends AppCompatActivity {
         movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
         if (movieDetails != null) {
-
             populateMovieDetails(movieDetails);
-
             setTitle(R.string.detail_header);
 
         } else {
             closeOnError();
         }
 
+        initVideoRecyclerView();
+        initReviewRecyclerView();
 
-        jsonMovieApi = getRetrofitInstance().create(JsonMovieApi.class);
+        setupVideosViewModel();
+        setupReviewsViewModel();
 
-        /* Button videosButton = (Button) findViewById(R.id.button_videos);
+                /* Button videosButton = (Button) findViewById(R.id.button_videos);
         videosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,17 +85,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         }); */
 
-        // RecyclerView method
-        videoTitleList();
-        movieReviewList();
-
-    }
-
-    private static Retrofit getRetrofitInstance() {
-        return new Retrofit.Builder()
-                .baseUrl(MOVIE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
     }
 
     @Override
@@ -126,11 +96,46 @@ public class DetailActivity extends AppCompatActivity {
         finish();
     }
 
-    // Get current movie ID
-    private int populateMovieId(Movie movie) {
-        int movieId = movie.getMovieId();
-        return movieId;
+
+    private void setupVideosViewModel() {
+        viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
+        viewModel.getVideos().observe(this, new Observer<ArrayList<MovieVideos>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MovieVideos> movieVideos) {
+                videoAdapter.updateVideoList(movieVideos);
+            }
+        });
+        viewModel.getVideoList(movieDetails);
     }
+
+    private void setupReviewsViewModel() {
+        viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
+        viewModel.getReviews().observe(this, new Observer<ArrayList<MovieReviews>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MovieReviews> movieReviews) {
+                reviewAdapter.updateReviewList(movieReviews);
+            }
+        });
+        viewModel.getReviewList(movieDetails);
+    }
+
+
+    private void initVideoRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_videos);
+        videoAdapter = new VideosRecyclerViewAdapter(this, new ArrayList<MovieVideos>());
+        recyclerView.setAdapter(videoAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initReviewRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
+        reviewAdapter = new ReviewsRecyclerViewAdapter(this, new ArrayList<MovieReviews>());
+        recyclerView.setAdapter(reviewAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
 
     private void populateMovieDetails(Movie movie) {
 
@@ -171,98 +176,5 @@ public class DetailActivity extends AppCompatActivity {
         movieOverview.setText(movie.getOverview());
 
     }
-
-
-    private void onMovieReviewResponseReceived(Response<MovieReviewsResponse> response) {
-
-        if (response.isSuccessful()) {
-
-            MovieReviewsResponse movieReviewsResponse = response.body();
-            ArrayList<MovieReviews> reviews = (ArrayList<MovieReviews>) movieReviewsResponse.getReviewResults();
-            reviewAdapter.updateReviewList(reviews);
-
-        } else {
-            Log.e(LOG_TAG, "Code: " + response.code());
-
-        }
-
-    }
-
-        private void onMovieVideoResponseReceived(Response<MovieVideosResponse> response) {
-
-        if (response.isSuccessful()) {
-
-            MovieVideosResponse movieVideoResponse = response.body();
-            ArrayList<MovieVideos> movieVideos = (ArrayList<MovieVideos>) movieVideoResponse.getVideoResults();
-            videoAdapter.updateVideoList(movieVideos);
-
-        } else {
-            Log.e(LOG_TAG, "Code: " + response.code());
-
-        }
-
-    }
-
-    private void videoTitleList() {
-
-        movieId = populateMovieId(movieDetails);
-
-        Call<MovieVideosResponse> call = jsonMovieApi.getMovieVideos(movieId, apiKey);
-
-        call.enqueue(new Callback<MovieVideosResponse>() {
-            @Override
-            public void onResponse(Call<MovieVideosResponse> call, Response<MovieVideosResponse> response) {
-                onMovieVideoResponseReceived(response);
-                // TODO: Add a string message "Currently no videos for this movie" if no data is returned
-            }
-
-            @Override
-            public void onFailure(Call<MovieVideosResponse> call, Throwable t) {
-                Log.e(LOG_TAG, t.getMessage());
-            }
-        });
-
-        initVideoRecyclerView();
-
-    }
-
-    private void movieReviewList() {
-
-            movieId = populateMovieId(movieDetails);
-
-            Call <MovieReviewsResponse> call = jsonMovieApi.getMovieReviews(movieId, apiKey);
-
-            call.enqueue(new Callback<MovieReviewsResponse>() {
-                @Override
-                public void onResponse(Call<MovieReviewsResponse> call, Response<MovieReviewsResponse> response) {
-                    onMovieReviewResponseReceived(response);
-                }
-
-                @Override
-                public void onFailure(Call<MovieReviewsResponse> call, Throwable t) {
-                    Log.e(LOG_TAG, t.getMessage());
-                }
-            });
-
-            initReviewRecyclerView();
-    }
-
-    private void initVideoRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_videos);
-        videoAdapter = new VideosRecyclerViewAdapter(this, videoDetails);
-        recyclerView.setAdapter(videoAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-
-    private void initReviewRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
-        reviewAdapter = new ReviewsRecyclerViewAdapter(this, reviewDetails);
-        recyclerView.setAdapter(reviewAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
 
 }
