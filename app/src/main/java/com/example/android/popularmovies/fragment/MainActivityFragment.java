@@ -1,7 +1,11 @@
 package com.example.android.popularmovies.fragment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieResponse;
+import com.example.android.popularmovies.database.MovieFavoritesDatabase;
+import com.example.android.popularmovies.database.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,44 +43,19 @@ public class MainActivityFragment extends Fragment {
     private MovieAdapter movieAdapter;
 
     private GridView gridView;
-
     private TextView errorMessage;
 
-    private JsonMovieApi jsonMovieApi;
-
-
-    // TODO: API KEY GOES HERE
-    private static final String apiKey = " ";
-
-    // URL for movie data
-    private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
+    private MovieFavoritesDatabase movieDatabase;
+    private MovieViewModel viewModel;
 
 
     public MainActivityFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MOVIE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        jsonMovieApi = retrofit.create(JsonMovieApi.class);
-
-        getPopularMovies();
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Set up MovieViewModel
+        setupViewModel();
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -86,7 +67,6 @@ public class MainActivityFragment extends Fragment {
 
         // Get a reference to the error message
         errorMessage = rootView.findViewById(R.id.error_message_display);
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,77 +86,50 @@ public class MainActivityFragment extends Fragment {
         startActivity(intent);
     }
 
+    private void setupViewModel() {
+        viewModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                if (movies.size() > 0) {
+                    // Clear any previous data
+                    movieAdapter.clear();
+
+                    // Add new movie data
+                    Log.d(LOG_TAG, "Updated list of movies from LiveData in ViewModel");
+                    movieAdapter.addAll(movies);
+
+                    gridView.setVisibility(View.VISIBLE);
+                    errorMessage.setVisibility(View.GONE);
+
+                } else {
+                    errorMessage.setVisibility(View.VISIBLE);
+                    gridView.setVisibility(View.GONE);
+
+                }
+            }
+        });
+        viewModel.getPopularMovies();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     public void sortByPopularity() {
-        getPopularMovies();
+        viewModel.getPopularMovies();
     }
 
     public void sortByTopRated() {
-        getTopRatedMovies();
+        viewModel.getTopRatedMovies();
     }
 
+    /* Need to get this set up once database is working
     public void sortByFavorites() {
-        // getFavoriteMovies();
-    }
+        movieDatabase = MovieFavoritesDatabase.getInstance(getContext()); // should be getApplicationContext instead?
+        setupViewModel();
+    } */
 
-    // Method for retrieving Popular movies
-    private void getPopularMovies() {
-
-        Call<MovieResponse> call = jsonMovieApi.getPopularMovies(apiKey);
-
-        call.enqueue(new Callback<MovieResponse>() {
-
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                onMovieResponseReceived(response);
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Log.e(LOG_TAG, t.getMessage());
-
-            }
-        });
-    }
-
-    // Method for retrieving Top Rated Movies
-    private void getTopRatedMovies() {
-
-        Call<MovieResponse> call = jsonMovieApi.getTopRatedMovies(apiKey);
-
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                onMovieResponseReceived(response);
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Log.e(LOG_TAG, t.getMessage());
-
-            }
-        });
-    }
-
-    // Method for receiving a Movie response object and displaying its data
-    private void onMovieResponseReceived(Response<MovieResponse> response) {
-        movieAdapter.clear();
-
-        if (response.isSuccessful()) {
-
-            MovieResponse movieResponse = response.body();
-            List<Movie> movies = movieResponse.getMovieResults();
-            movieAdapter.addAll(movies);
-
-            gridView.setVisibility(View.VISIBLE);
-            errorMessage.setVisibility(View.GONE);
-
-        } else {
-            errorMessage.setVisibility(View.VISIBLE);
-            gridView.setVisibility(View.GONE);
-            Log.e(LOG_TAG, "Code: " + response.code());
-
-        }
-    }
 
 }
