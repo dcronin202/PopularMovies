@@ -1,7 +1,6 @@
 package com.example.android.popularmovies.fragment;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,20 +17,12 @@ import android.widget.TextView;
 import com.example.android.popularmovies.DetailActivity;
 import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
-import com.example.android.popularmovies.data.MovieResponse;
 import com.example.android.popularmovies.database.MovieFavoritesDatabase;
-import com.example.android.popularmovies.database.MovieViewModel;
+import com.example.android.popularmovies.viewmodel.MovieMainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /*
 * A fragment containing the list view of movie posters
@@ -46,7 +37,7 @@ public class MainActivityFragment extends Fragment {
     private TextView errorMessage;
 
     private MovieFavoritesDatabase movieDatabase;
-    private MovieViewModel viewModel;
+    private MovieMainViewModel viewModel;
 
 
     public MainActivityFragment() {
@@ -54,7 +45,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Set up MovieViewModel
+        // Set up MovieMainViewModel
         setupViewModel();
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -87,7 +78,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        viewModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MovieMainViewModel.class);
         viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
