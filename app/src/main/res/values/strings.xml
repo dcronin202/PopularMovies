@@ -16,6 +16,7 @@
     <!-- Menu Options -->
     <string name="menu_most_popular">Most Popular</string>
     <string name="menu_highest_rated">Highest Rated</string>
+    <string name="menu_favorites">Favorites</string>
 
     <!-- Tab Titles -->
     <string name="tab_overview">Overview</string>
