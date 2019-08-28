@@ -1,4 +1,4 @@
-package com.example.android.popularmovies.database;
+package com.example.android.popularmovies.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -10,19 +10,17 @@ import com.example.android.popularmovies.data.Movie;
 
 import java.util.List;
 
-public class MovieViewModel extends AndroidViewModel {
+public class MovieMainViewModel extends AndroidViewModel {
 
-    private static final String LOG_TAG = MovieViewModel.class.getSimpleName();
+    private static final String LOG_TAG = MovieMainViewModel.class.getSimpleName();
 
-    private MovieRepository repository;
-    private LiveData<List<Movie>> movies;
+    private MovieMainRepository repository;
 
 
-    public MovieViewModel(@NonNull Application application) {
+    public MovieMainViewModel(@NonNull Application application) {
         super(application);
-        repository = new MovieRepository(application);
+        repository = new MovieMainRepository(application);
         Log.d(LOG_TAG, "Actively retrieving the movies from the database.");
-        movies = repository.getAllMovies();
 
     }
 

@@ -1,17 +1,15 @@
-package com.example.android.popularmovies.database;
+package com.example.android.popularmovies.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
-import android.view.View;
-import android.widget.GridView;
-import android.widget.TextView;
 
-import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.data.JsonMovieApi;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieResponse;
+import com.example.android.popularmovies.database.MovieDao;
+import com.example.android.popularmovies.database.MovieFavoritesDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MovieRepository {
+public class MovieMainRepository {
 
-    private static final String LOG_TAG = MovieRepository.class.getSimpleName();
+    private static final String LOG_TAG = MovieMainRepository.class.getSimpleName();
     // TODO: API KEY GOES HERE
     private static final String apiKey = " ";
     private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/";
@@ -34,7 +32,7 @@ public class MovieRepository {
     private MovieDao movieDao;
     private MutableLiveData<List<Movie>> movies;
 
-    MovieRepository(Application application) {
+    MovieMainRepository(Application application) {
         MovieFavoritesDatabase database = MovieFavoritesDatabase.getInstance(application);
         movieDao = database.movieDao();
         //movies = movieDao.loadAllMovies();
