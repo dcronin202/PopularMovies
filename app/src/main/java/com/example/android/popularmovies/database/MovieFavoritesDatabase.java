@@ -27,41 +27,12 @@ public abstract class MovieFavoritesDatabase extends RoomDatabase {
                         .build();
             }
         }
-        Log.d(LOG_TAG, "Getting the database instance");
+        Log.d(LOG_TAG, "Getting the database instance.");
         return sInstance;
     }
 
     public abstract MovieDao movieDao();
 
-    /* Create callback for populating the database
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase database) {
-            super.onOpen(database);
-            new PopulateDatabaseAsync(sInstance).exectute();
-        }
-    };
-
-    // Populate the database in the background
-    private static class PopulateDatabaseAsync extends AsyncTask<Void, Void, Void> {
-
-        private final MovieDao mDao;
-        private Movie movieDetails;
-        String[] test = {"Testing", "One", "Two"};
-
-        PopulateDatabaseAsync(MovieFavoritesDatabase database) {
-            mDao = database.taskDao();
-        }
-
-        /*
-        @Override
-        protected Void doInBackground(final Void... params) {
-            mDao.deleteAll();
-
-
-        }
-
-    } */
+    
 
 }
