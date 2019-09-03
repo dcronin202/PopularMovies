@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CheckBoxTheme" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">#FFF</item>
+        <item name="colorControlActivated">#FBC02D</item>
+        <item name="colorControlHighlight">#FFF</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
 </resources>

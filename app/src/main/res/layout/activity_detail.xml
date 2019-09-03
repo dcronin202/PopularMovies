@@ -90,7 +90,9 @@
                         android:textStyle="bold"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:checked="false"/>
+                        android:button="@drawable/star_checkbox"
+                        android:theme="@style/CheckBoxTheme"
+                        android:checked="false" />
 
                 </LinearLayout>
 
