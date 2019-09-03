@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        /* if (id==R.id.favorites) {
+        if (id==R.id.favorites) {
             // Sort by favorites
             mainActivityFragment.sortByFavorites();
             return true;
-        } */
+        }
 
         return super.onOptionsItemSelected(item);
     }
