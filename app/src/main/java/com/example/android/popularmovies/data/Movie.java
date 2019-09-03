@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.data;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -41,7 +42,9 @@ public class Movie implements Parcelable {
     @Expose
     private double popularity;
 
-    // private String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
+    @ColumnInfo(name = "is_favorite")
+    @Expose
+    private boolean isFavorite;
 
     @Ignore
     public Movie() {
@@ -57,7 +60,7 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
     }
 
-    public Movie(int movieId, String movieTitle, String posterImage, String overview, double rating, String releaseDate, double popularity) {
+    public Movie(int movieId, String movieTitle, String posterImage, String overview, double rating, String releaseDate, double popularity, boolean isFavorite) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.posterImage = posterImage;
@@ -65,6 +68,7 @@ public class Movie implements Parcelable {
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.popularity = popularity;
+        this.isFavorite = isFavorite;
     }
 
     public int getMovieId() {
@@ -83,9 +87,14 @@ public class Movie implements Parcelable {
         this.movieTitle = movieTitle;
     }
 
-    // TODO: Remove the hard-coded url when everything is working
     public String getPosterImage() {
-        return "https://image.tmdb.org/t/p/w185/" + posterImage;  // deleted moviePosterPath +
+        String moviePosterPath = "https://image.tmdb.org/t/p/w185/";
+        if (posterImage.contains(moviePosterPath)){
+            return posterImage;
+
+        } else {
+            return moviePosterPath + posterImage;
+        }
     }
 
     public void setPosterImage(String posterImage) {
@@ -124,6 +133,14 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
     }
 
+    public boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
 
     // Code for Parcels
     private Movie(Parcel p) {
@@ -134,7 +151,12 @@ public class Movie implements Parcelable {
         rating = p.readDouble();
         releaseDate = p.readString();
         popularity = p.readDouble();
-
+        int isFavoriteInt = p.readInt();
+        if (isFavoriteInt == 0) {
+            isFavorite = false;
+        } else {
+            isFavorite = true;
+        }
     }
 
     @Override
@@ -151,7 +173,11 @@ public class Movie implements Parcelable {
         parcel.writeDouble(rating);
         parcel.writeString(releaseDate);
         parcel.writeDouble(popularity);
-
+        int isFavoriteInteger = 0;
+        if (isFavorite) {
+            isFavoriteInteger = 1;
+        }
+        parcel.writeInt(isFavoriteInteger);
     }
 
     public final static Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
