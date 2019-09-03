@@ -8,8 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.adapter.VideosRecyclerViewAdapter;
 import com.example.android.popularmovies.adapter.ReviewsRecyclerViewAdapter;
@@ -174,6 +177,22 @@ public class DetailActivity extends AppCompatActivity {
         // Plot Overview
         TextView movieOverview = findViewById(R.id.movie_overview);
         movieOverview.setText(movie.getOverview());
+
+        // Favorites Checkbox
+        final CheckBox favorites = findViewById(R.id.checkbox_favorites);
+        favorites.setChecked(movie.getIsFavorite());
+        favorites.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(favorites.isChecked()) {
+                    viewModel.addFavorite(movieDetails);
+                    Toast.makeText(getApplicationContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+                } else {
+                    viewModel.removeFavorite(movieDetails);
+                    Toast.makeText(getApplicationContext(), R.string.removed_from_favorites, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
