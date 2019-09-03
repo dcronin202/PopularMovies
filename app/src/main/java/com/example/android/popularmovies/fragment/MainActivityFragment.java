@@ -100,7 +100,8 @@ public class MainActivityFragment extends Fragment {
                 }
             }
         });
-        viewModel.getPopularMovies();
+        //TODO: When screen rotates, it goes back to getPopularMovies. Need to remedy.
+        //viewModel.getPopularMovies();
     }
 
     @Override
@@ -116,11 +117,9 @@ public class MainActivityFragment extends Fragment {
         viewModel.getTopRatedMovies();
     }
 
-    /* Need to get this set up once database is working
     public void sortByFavorites() {
-        movieDatabase = MovieFavoritesDatabase.getInstance(getContext()); // should be getApplicationContext instead?
-        setupViewModel();
-    } */
+        viewModel.getFavorites(this);
+    }
 
 
 }
