@@ -1,8 +1,12 @@
 package com.example.android.popularmovies.viewmodel;
 
 import android.app.Application;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.android.popularmovies.data.JsonMovieApi;
@@ -46,6 +50,18 @@ public class MovieMainRepository {
     }
 
 
+    public void getFavoritesList(LifecycleOwner owner) {
+        movieDao.loadAllMovies().observe(owner, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> databaseMovies) {
+                if (databaseMovies != null) {
+                    movies.postValue(databaseMovies);
+                }
+            }
+        });
+    }
+
+
     // RETROFIT Methods //
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -73,6 +89,7 @@ public class MovieMainRepository {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
+                movies.postValue(new ArrayList<Movie>());
                 Log.e(LOG_TAG, t.getMessage());
             }
         });
@@ -94,6 +111,7 @@ public class MovieMainRepository {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
+                movies.postValue(new ArrayList<Movie>());
                 Log.e(LOG_TAG, t.getMessage());
             }
         });

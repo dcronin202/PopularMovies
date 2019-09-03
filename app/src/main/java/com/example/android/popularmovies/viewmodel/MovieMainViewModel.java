@@ -2,6 +2,7 @@ package com.example.android.popularmovies.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -26,6 +27,11 @@ public class MovieMainViewModel extends AndroidViewModel {
 
     public LiveData<List<Movie>> getMovies() {
         return repository.getAllMovies();
+    }
+
+
+    public void getFavorites(LifecycleOwner owner) {
+        repository.getFavoritesList(owner);
     }
 
     public void getPopularMovies() {
