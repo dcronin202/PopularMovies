@@ -3,6 +3,7 @@ package com.example.android.popularmovies.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.android.popularmovies.data.JsonMovieApi;
@@ -15,6 +16,7 @@ import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.database.MovieFavoritesDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +52,36 @@ public class MovieDetailRepository {
 
     public LiveData<ArrayList<MovieReviews>> getReviewDetails() {
         return movieReviews;
+    }
+
+
+    public void insertMovie(Movie movie) {
+        new InsertFavoritesAsyncTask().execute(movie);
+    }
+
+    public void removeMovie(Movie movie) {
+        new RemoveFavoritesAsyncTask().execute(movie);
+    }
+
+
+    private class InsertFavoritesAsyncTask extends AsyncTask<Movie, Void, List<Movie>> {
+
+        @Override
+        protected List<Movie> doInBackground(Movie... movies) {
+
+            movieDao.insertMovie(movies[0]);
+            return null;
+        }
+    }
+
+    private class RemoveFavoritesAsyncTask extends AsyncTask<Movie, Void, List<Movie>> {
+
+        @Override
+        protected List<Movie> doInBackground(Movie... movies) {
+
+            movieDao.removeMovie(movies[0]);
+            return null;
+        }
     }
 
     // Get current movie ID

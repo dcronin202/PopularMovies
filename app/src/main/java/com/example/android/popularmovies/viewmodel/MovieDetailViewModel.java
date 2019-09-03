@@ -23,16 +23,28 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     }
 
+    // Favorites
+    public void addFavorite(Movie movie) {
+        movie.setIsFavorite(true);
+        movieDetailRepository.insertMovie(movie);
+    }
+
+    public void removeFavorite(Movie movie) {
+        movieDetailRepository.removeMovie(movie);
+    }
+
+    // Videos
     public LiveData<ArrayList<MovieVideos>> getVideos() {
         return movieDetailRepository.getVideoDetails();
     }
 
-    public LiveData<ArrayList<MovieReviews>> getReviews() {
-        return movieDetailRepository.getReviewDetails();
-    }
-
     public void getVideoList(Movie movieId) {
         movieDetailRepository.callVideoList(movieId);
+    }
+
+    // Reviews
+    public LiveData<ArrayList<MovieReviews>> getReviews() {
+        return movieDetailRepository.getReviewDetails();
     }
 
     public void getReviewList(Movie movieId) {
