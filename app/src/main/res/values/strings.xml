@@ -34,4 +34,8 @@
     <string name="coming_soon_videos">Videos Coming Soon!</string>
     <string name="coming_soon_reviews">Movie Reviews Coming Soon!</string>
 
+    <!-- Favorites Messages -->
+    <string name="added_to_favorites">Added to Favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
+
 </resources>
