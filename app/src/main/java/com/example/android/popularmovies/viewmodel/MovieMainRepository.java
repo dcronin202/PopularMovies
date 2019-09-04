@@ -39,12 +39,10 @@ public class MovieMainRepository {
     MovieMainRepository(Application application) {
         MovieFavoritesDatabase database = MovieFavoritesDatabase.getInstance(application);
         movieDao = database.movieDao();
-        //movies = movieDao.loadAllMovies();
         movies = new MutableLiveData<>();
 
     }
 
-    // Need to merge Retrofit with the LiveData getAllMovies()
     public LiveData<List<Movie>> getAllMovies() {
         return movies;
     }
@@ -74,7 +72,7 @@ public class MovieMainRepository {
     }
 
     // Method for retrieving Popular movies
-    public void callPopularMovies() {
+    public void callPopularMovies(final LifecycleOwner owner) {
         if (jsonMovieApi == null) {
             getJsonMovieApi();
         }
@@ -84,7 +82,7 @@ public class MovieMainRepository {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                onMovieResponseReceived(response);
+                onMovieResponseReceived(response, owner);
             }
 
             @Override
@@ -96,7 +94,7 @@ public class MovieMainRepository {
     }
 
     // Method for retrieving Top Rated movies
-    public void callTopRatedMovies() {
+    public void callTopRatedMovies(final LifecycleOwner owner) {
         if (jsonMovieApi == null) {
             getJsonMovieApi();
         }
@@ -106,7 +104,7 @@ public class MovieMainRepository {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                onMovieResponseReceived(response);
+                onMovieResponseReceived(response, owner);
             }
 
             @Override
@@ -118,12 +116,30 @@ public class MovieMainRepository {
     }
 
     // Method for receiving a Movie response object and displaying its data
-    private void onMovieResponseReceived(Response<MovieResponse> response) {
+    private void onMovieResponseReceived(Response<MovieResponse> response, LifecycleOwner owner) {
 
         if (response.isSuccessful()) {
 
             MovieResponse movieResponse = response.body();
-            List<Movie> movieResults = movieResponse.getMovieResults();
+            final List<Movie> movieResults = movieResponse.getMovieResults();
+            movieDao.loadAllMovies().observe(owner, new Observer<List<Movie>>() {
+                @Override
+                public void onChanged(@Nullable List<Movie> databaseMovies) {
+                    if (databaseMovies != null) {
+                        // Loop through the network movies to find the matching one in the DB
+                        for (int indexForNetworkResult = 0; indexForNetworkResult < movieResults.size(); indexForNetworkResult++) {
+                            // Loop through DB movies to see if its the same one
+                            Movie movieFromNetwork = movieResults.get(indexForNetworkResult);
+                            for (int indexForDbResult = 0; indexForDbResult < databaseMovies.size(); indexForDbResult++) {
+                                Movie movieFromDb = databaseMovies.get(indexForDbResult);
+                                if (movieFromDb.getMovieId() == movieFromNetwork.getMovieId()) {
+                                    movieFromNetwork.setIsFavorite(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
             movies.postValue(movieResults);
 
 
