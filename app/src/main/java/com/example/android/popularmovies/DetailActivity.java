@@ -73,10 +73,8 @@ public class DetailActivity extends AppCompatActivity {
         } */
 
         //initVideoRecyclerView();
-        //initReviewRecyclerView();
 
         //setupVideosViewModel();
-        //setupReviewsViewModel();
 
         viewModel.setMovieDetails(movieDetails);
 
@@ -109,17 +107,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
         viewModel.getVideoList(movieDetails);
-    }
-
-    private void setupReviewsViewModel() {
-        viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
-        viewModel.getReviews().observe(this, new Observer<ArrayList<MovieReviews>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MovieReviews> movieReviews) {
-                reviewAdapter.updateReviewList(movieReviews);
-            }
-        });
-        viewModel.getReviewList(movieDetails);
     }
 
 
