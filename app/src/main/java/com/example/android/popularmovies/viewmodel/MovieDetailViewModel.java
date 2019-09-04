@@ -16,11 +16,17 @@ public class MovieDetailViewModel extends AndroidViewModel {
     private static final String LOG_TAG = MovieDetailViewModel.class.getSimpleName();
 
     private MovieDetailRepository movieDetailRepository;
+    private Movie movieDetails;
+
 
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
         movieDetailRepository = new MovieDetailRepository(application);
 
+    }
+
+    public void setMovieDetails(Movie movie) {
+        this.movieDetails = movie;
     }
 
     // Favorites
