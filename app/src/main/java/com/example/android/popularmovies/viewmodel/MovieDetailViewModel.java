@@ -53,8 +53,8 @@ public class MovieDetailViewModel extends AndroidViewModel {
         return movieDetailRepository.getReviewDetails();
     }
 
-    public void getReviewList(Movie movieId) {
-        movieDetailRepository.callReviewList(movieId);
+    public void getReviewList() {
+        movieDetailRepository.callReviewList(movieDetails);
     }
 
 }

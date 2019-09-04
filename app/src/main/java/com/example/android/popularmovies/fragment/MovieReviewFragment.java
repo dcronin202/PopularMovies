@@ -24,7 +24,6 @@ public class MovieReviewFragment extends Fragment {
 
     private static final String LOG_TAG = MovieReviewFragment.class.getSimpleName();
 
-    private Movie movieDetails;
     private MovieDetailViewModel viewModel;
     private RecyclerView recyclerView;
 
@@ -55,7 +54,7 @@ public class MovieReviewFragment extends Fragment {
                 reviewAdapter.updateReviewList(movieReviews);
             }
         });
-        viewModel.getReviewList(movieDetails);
+        viewModel.getReviewList();
     }
 
 }
