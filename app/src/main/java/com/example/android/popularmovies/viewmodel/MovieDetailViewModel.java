@@ -44,8 +44,8 @@ public class MovieDetailViewModel extends AndroidViewModel {
         return movieDetailRepository.getVideoDetails();
     }
 
-    public void getVideoList(Movie movieId) {
-        movieDetailRepository.callVideoList(movieId);
+    public void getVideoList() {
+        movieDetailRepository.callVideoList(movieDetails);
     }
 
     // Reviews
