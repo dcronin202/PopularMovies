@@ -11,10 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.popularmovies.DetailActivity;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.adapter.ReviewsRecyclerViewAdapter;
-import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.viewmodel.MovieDetailViewModel;
 
@@ -25,8 +23,8 @@ public class MovieReviewFragment extends Fragment {
     private static final String LOG_TAG = MovieReviewFragment.class.getSimpleName();
 
     private MovieDetailViewModel viewModel;
-    private RecyclerView recyclerView;
 
+    private RecyclerView recyclerView;
     private ReviewsRecyclerViewAdapter reviewAdapter;
 
     @Override
