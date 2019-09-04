@@ -72,10 +72,6 @@ public class DetailActivity extends AppCompatActivity {
             closeOnError();
         } */
 
-        //initVideoRecyclerView();
-
-        //setupVideosViewModel();
-
         viewModel.setMovieDetails(movieDetails);
 
         //Set up ViewPager with the MoviePagerAdapter
@@ -95,35 +91,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private void closeOnError() {
         finish();
-    }
-
-
-    private void setupVideosViewModel() {
-        viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
-        viewModel.getVideos().observe(this, new Observer<ArrayList<MovieVideos>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MovieVideos> movieVideos) {
-                videoAdapter.updateVideoList(movieVideos);
-            }
-        });
-        viewModel.getVideoList(movieDetails);
-    }
-
-
-    private void initVideoRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_videos);
-        videoAdapter = new VideosRecyclerViewAdapter(this, new ArrayList<MovieVideos>());
-        recyclerView.setAdapter(videoAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void initReviewRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
-        reviewAdapter = new ReviewsRecyclerViewAdapter(this, new ArrayList<MovieReviews>());
-        recyclerView.setAdapter(reviewAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
