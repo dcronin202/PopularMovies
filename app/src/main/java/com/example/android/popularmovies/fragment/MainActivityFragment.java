@@ -2,6 +2,7 @@ package com.example.android.popularmovies.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +19,6 @@ import com.example.android.popularmovies.DetailActivity;
 import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.Movie;
-import com.example.android.popularmovies.database.MovieFavoritesDatabase;
 import com.example.android.popularmovies.viewmodel.MovieMainViewModel;
 
 import java.util.ArrayList;
@@ -36,7 +36,6 @@ public class MainActivityFragment extends Fragment {
     private GridView gridView;
     private TextView errorMessage;
 
-    private MovieFavoritesDatabase movieDatabase;
     private MovieMainViewModel viewModel;
 
 
@@ -79,6 +78,7 @@ public class MainActivityFragment extends Fragment {
 
     private void setupViewModel() {
         viewModel = ViewModelProviders.of(getActivity()).get(MovieMainViewModel.class);
+        viewModel.setupSharedPref(getActivity().getSharedPreferences("movie-app", Context.MODE_PRIVATE));
         viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
@@ -100,8 +100,13 @@ public class MainActivityFragment extends Fragment {
                 }
             }
         });
-        //TODO: When screen rotates, it goes back to getPopularMovies. Need to remedy.
-        //viewModel.getPopularMovies();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.loadMovies(this);
     }
 
     @Override
@@ -110,11 +115,11 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void sortByPopularity() {
-        viewModel.getPopularMovies();
+        viewModel.getPopularMovies(this);
     }
 
     public void sortByTopRated() {
-        viewModel.getTopRatedMovies();
+        viewModel.getTopRatedMovies(this);
     }
 
     public void sortByFavorites() {

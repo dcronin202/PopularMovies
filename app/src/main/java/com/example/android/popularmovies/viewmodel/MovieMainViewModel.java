@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,6 +17,12 @@ public class MovieMainViewModel extends AndroidViewModel {
     private static final String LOG_TAG = MovieMainViewModel.class.getSimpleName();
 
     private MovieMainRepository repository;
+
+    private static final String viewState = "view_state";
+    private static final String popularView = "popular";
+    private static final String topRatedView = "top_rated";
+    private static final String favoritesView = "favorites";
+    private SharedPreferences mPreferences;
 
 
     public MovieMainViewModel(@NonNull Application application) {
@@ -30,16 +37,43 @@ public class MovieMainViewModel extends AndroidViewModel {
     }
 
 
+    public void loadMovies(LifecycleOwner owner) {
+        String showViewState = mPreferences.getString(viewState, "default");
+        if (showViewState.equals(favoritesView)) {
+            getFavorites(owner);
+        } else if (showViewState.equals(topRatedView)) {
+            getTopRatedMovies(owner);
+        } else {
+            getPopularMovies(owner);
+        }
+    }
+
     public void getFavorites(LifecycleOwner owner) {
         repository.getFavoritesList(owner);
+        saveViewState(favoritesView);
     }
 
-    public void getPopularMovies() {
-        repository.callPopularMovies();
+    public void getPopularMovies(LifecycleOwner owner) {
+        repository.callPopularMovies(owner);
+        saveViewState(popularView);
     }
 
-    public void getTopRatedMovies() {
-        repository.callTopRatedMovies();
+    public void getTopRatedMovies(LifecycleOwner owner) {
+        repository.callTopRatedMovies(owner);
+        saveViewState(topRatedView);
     }
+
+
+    public void setupSharedPref(SharedPreferences sharedPreferences) {
+        this.mPreferences = sharedPreferences;
+    }
+
+    private void saveViewState(String newState) {
+        String currentViewState = newState;
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(viewState, currentViewState);
+        editor.commit();
+    }
+
 
 }
