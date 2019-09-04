@@ -22,7 +22,6 @@ import com.example.android.popularmovies.adapter.ReviewsRecyclerViewAdapter;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.data.MovieVideos;
-import com.example.android.popularmovies.database.MovieFavoritesDatabase;
 import com.example.android.popularmovies.fragment.MovieDetailsFragment;
 import com.example.android.popularmovies.fragment.MovieReviewFragment;
 import com.example.android.popularmovies.fragment.MovieVideoFragment;
@@ -51,8 +50,6 @@ public class DetailActivity extends AppCompatActivity {
     private MoviePagerAdapter mMoviePagerAdapter;
     private ViewPager mViewPager;
 
-    private MovieFavoritesDatabase favoritesDatabase;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +61,8 @@ public class DetailActivity extends AppCompatActivity {
         movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
         setTitle(movieDetails.getMovieTitle());
+
+        viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
 
         /*if (movieDetails != null) {
             populateMovieDetails(movieDetails);
@@ -79,25 +78,7 @@ public class DetailActivity extends AppCompatActivity {
         //setupVideosViewModel();
         //setupReviewsViewModel();
 
-                /* Button videosButton = (Button) findViewById(R.id.button_videos);
-        videosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent videoIntent = new Intent(DetailActivity.this, VideosActivity.class);
-                videoIntent.putParcelableArrayListExtra(VideosActivity.VIDEO_DETAILS, videoDetails);
-                startActivity(videoIntent);
-            }
-        });
-
-        Button reviewsButton = (Button) findViewById(R.id.button_reviews);
-        reviewsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent reviewIntent = new Intent(DetailActivity.this, ReviewsActivity.class);
-                reviewIntent.putExtra(ReviewsActivity.REVIEW_DETAILS, reviewDetails);
-                startActivity(reviewIntent);
-            }
-        }); */
+        viewModel.setMovieDetails(movieDetails);
 
         //Set up ViewPager with the MoviePagerAdapter
         mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
@@ -158,62 +139,6 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-    private void populateMovieDetails(Movie movie) {
-
-        // Movie Title
-        TextView movieTitle = findViewById(R.id.movie_title);
-        movieTitle.setText(movie.getMovieTitle());
-
-        // Movie Poster
-        ImageView moviePoster = findViewById(R.id.movie_poster);
-        Picasso.get()
-                .load(movie.getPosterImage())
-                .into(moviePoster);
-
-        // Year - reformatted original String input to display MMMM yyyy format
-        String releaseDate = movie.getReleaseDate();
-        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date newReleaseDate = null;
-        try {
-            newReleaseDate = (Date) oldDateFormat.parse(releaseDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-        String finalDate = newDateFormat.format(newReleaseDate);
-
-        TextView yearReleased = findViewById(R.id.release_date);
-        yearReleased.setText(finalDate);
-
-        // Avg Rating
-        String movieRating = String.valueOf(movie.getRating());
-        String avgMovieRating = movieRating + getString(R.string.out_of_ten);
-
-        TextView averageRating = findViewById(R.id.average_rating);
-        averageRating.setText(avgMovieRating);
-
-        // Plot Overview
-        TextView movieOverview = findViewById(R.id.movie_overview);
-        movieOverview.setText(movie.getOverview());
-
-        // Favorites Checkbox
-        final CheckBox favorites = findViewById(R.id.checkbox_favorites);
-        favorites.setChecked(movie.getIsFavorite());
-        favorites.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(favorites.isChecked()) {
-                    viewModel.addFavorite(movieDetails);
-                    Toast.makeText(getApplicationContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
-                } else {
-                    viewModel.removeFavorite(movieDetails);
-                    Toast.makeText(getApplicationContext(), R.string.removed_from_favorites, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
 
     //Adds fragments to MoviePagerAdapter
     private void setupViewPager(ViewPager viewPager) {
