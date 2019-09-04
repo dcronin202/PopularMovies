@@ -38,11 +38,14 @@ public class MovieDetailRepository {
     private MutableLiveData<ArrayList<MovieVideos>> movieVideos;
     private MutableLiveData<ArrayList<MovieReviews>> movieReviews;
 
+    private MutableLiveData<ArrayList<Movie>> movieDetails;
+
     MovieDetailRepository(Application application) {
         MovieFavoritesDatabase database = MovieFavoritesDatabase.getInstance(application);
         movieDao = database.movieDao();
         movieVideos = new MutableLiveData<ArrayList<MovieVideos>>();
         movieReviews = new MutableLiveData<ArrayList<MovieReviews>>();
+        movieDetails = new MutableLiveData<ArrayList<Movie>>();
 
     }
 
@@ -52,6 +55,10 @@ public class MovieDetailRepository {
 
     public LiveData<ArrayList<MovieReviews>> getReviewDetails() {
         return movieReviews;
+    }
+
+    public LiveData<ArrayList<Movie>> getMovieDetails() {
+        return movieDetails;
     }
 
 

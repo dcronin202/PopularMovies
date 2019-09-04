@@ -39,6 +39,11 @@ public class MovieDetailViewModel extends AndroidViewModel {
         movieDetailRepository.removeMovie(movie);
     }
 
+    // Details
+    public void getDetails() {
+        movieDetailRepository.getVideoDetails();
+    }
+
     // Videos
     public LiveData<ArrayList<MovieVideos>> getVideos() {
         return movieDetailRepository.getVideoDetails();
