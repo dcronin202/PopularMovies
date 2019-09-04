@@ -6,11 +6,18 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/reviews_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/detail_review"
+        android:textColor="#fff"
+        android:textStyle="bold"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_reviews"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/coming_soon_reviews"
-        android:textColor="#FFF"
-        android:gravity="center"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
