@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.popularmovies.adapter.MoviePagerAdapter;
 import com.example.android.popularmovies.adapter.VideosRecyclerViewAdapter;
 import com.example.android.popularmovies.adapter.ReviewsRecyclerViewAdapter;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.data.MovieVideos;
 import com.example.android.popularmovies.database.MovieFavoritesDatabase;
+import com.example.android.popularmovies.fragment.MovieDetailsFragment;
+import com.example.android.popularmovies.fragment.MovieReviewFragment;
+import com.example.android.popularmovies.fragment.MovieVideoFragment;
 import com.example.android.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +48,9 @@ public class DetailActivity extends AppCompatActivity {
     private VideosRecyclerViewAdapter videoAdapter;
     private ReviewsRecyclerViewAdapter reviewAdapter;
 
+    private MoviePagerAdapter mMoviePagerAdapter;
+    private ViewPager mViewPager;
+
     private MovieFavoritesDatabase favoritesDatabase;
 
 
@@ -54,19 +63,21 @@ public class DetailActivity extends AppCompatActivity {
 
         movieDetails = intent.getParcelableExtra(MOVIE_DETAILS);
 
-        if (movieDetails != null) {
+        setTitle(movieDetails.getMovieTitle());
+
+        /*if (movieDetails != null) {
             populateMovieDetails(movieDetails);
             setTitle(R.string.detail_header);
 
         } else {
             closeOnError();
-        }
+        } */
 
-        initVideoRecyclerView();
-        initReviewRecyclerView();
+        //initVideoRecyclerView();
+        //initReviewRecyclerView();
 
-        setupVideosViewModel();
-        setupReviewsViewModel();
+        //setupVideosViewModel();
+        //setupReviewsViewModel();
 
                 /* Button videosButton = (Button) findViewById(R.id.button_videos);
         videosButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +98,14 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(reviewIntent);
             }
         }); */
+
+        //Set up ViewPager with the MoviePagerAdapter
+        mMoviePagerAdapter = new MoviePagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
     }
 
@@ -193,6 +212,24 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    //Adds fragments to MoviePagerAdapter
+    private void setupViewPager(ViewPager viewPager) {
+        final MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+
+        // Passing in movieDetails so views are immediately visible
+        //MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
+        //MovieReviewFragment movieReviewsFragment = new MovieReviewFragment();
+
+        //movieDetailsFragment.setMovie(movieDetails);
+
+        adapter.addFragment(new MovieDetailsFragment(), getString(R.string.tab_info));
+        adapter.addFragment(new MovieVideoFragment(), getString(R.string.tab_videos));
+        adapter.addFragment(new MovieReviewFragment(), getString(R.string.tab_reviews));
+
+        viewPager.setAdapter(adapter);
 
     }
 

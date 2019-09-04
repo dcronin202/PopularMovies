@@ -19,7 +19,7 @@
     <string name="menu_favorites">Favorites</string>
 
     <!-- Tab Titles -->
-    <string name="tab_overview">Overview</string>
+    <string name="tab_info">Info</string>
     <string name="tab_videos">Videos</string>
     <string name="tab_reviews">Reviews</string>
 
@@ -30,7 +30,7 @@
     <string name="error_message">Movie data not available.</string>
 
     <!-- Coming Soon -->
-    <string name="coming_soon_overview">Overview Coming Soon!</string>
+    <string name="coming_soon_info">Movie Info Coming Soon!</string>
     <string name="coming_soon_videos">Videos Coming Soon!</string>
     <string name="coming_soon_reviews">Movie Reviews Coming Soon!</string>
 
