@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/video_tab"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_videos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/coming_soon_videos"
-        android:textColor="#FFF"
-        android:gravity="center"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
