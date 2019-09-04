@@ -7,10 +7,16 @@
     <string name="detail_original_title">Original Title:</string>
     <string name="detail_release_date">Release Date:</string>
     <string name="detail_avg_rating">Average Rating:</string>
+    <string name="detail_plot_summary">Overview:</string>
+    <string name="detail_review">Reviews</string>
+    <string name="detail_review_content">Review Content:</string>
+    <string name="detail_videos">Related Videos</string>
+    <string name="detail_favorites">Mark as Favorite</string>
 
     <!-- Menu Options -->
     <string name="menu_most_popular">Most Popular</string>
     <string name="menu_highest_rated">Highest Rated</string>
+    <string name="menu_favorites">Favorites</string>
 
     <!-- Tab Titles -->
     <string name="tab_overview">Overview</string>
@@ -27,5 +33,9 @@
     <string name="coming_soon_overview">Overview Coming Soon!</string>
     <string name="coming_soon_videos">Videos Coming Soon!</string>
     <string name="coming_soon_reviews">Movie Reviews Coming Soon!</string>
+
+    <!-- Favorites Messages -->
+    <string name="added_to_favorites">Added to Favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
 
 </resources>
