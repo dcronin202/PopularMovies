@@ -28,6 +28,8 @@
 
     <!-- Error Message -->
     <string name="error_message">Movie data not available.</string>
+    <string name="no_videos_available">Sorry, there are no videos for %1$s at this time. Please check back later!</string>
+    <string name="no_reviews_available">Sorry, there are no reviews for %1$s at this time. Please check back later!</string>
 
     <!-- Coming Soon -->
     <string name="coming_soon_info">Movie Info Coming Soon!</string>
