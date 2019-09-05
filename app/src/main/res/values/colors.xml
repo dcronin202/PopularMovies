@@ -7,4 +7,7 @@
     <color name="tabColorYellow">#FBC02D</color>
     <color name="tabColorGray">#CFD8DC</color>
 
+    <color name="textColorWhite">#FFF</color>
+    <color name="textColorGray">#CFD8DC</color>
+
 </resources>
