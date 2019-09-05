@@ -3,8 +3,10 @@ package com.example.android.popularmovies.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieReviews;
 import com.example.android.popularmovies.data.MovieVideos;
@@ -29,6 +31,11 @@ public class MovieDetailViewModel extends AndroidViewModel {
         this.movieDetails = movie;
     }
 
+    public Movie getMovieDetails() {
+        return movieDetails;
+    }
+
+
     // Favorites
     public void addFavorite(Movie movie) {
         movie.setIsFavorite(true);
@@ -37,11 +44,6 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     public void removeFavorite(Movie movie) {
         movieDetailRepository.removeMovie(movie);
-    }
-
-    // Details
-    public void getDetails() {
-        movieDetailRepository.getVideoDetails();
     }
 
     // Videos
