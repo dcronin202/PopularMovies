@@ -26,7 +26,4 @@ public interface MovieDao {
     @Delete
     void removeMovie(Movie movie);
 
-    @Query("DELETE FROM favorites")
-    void deleteAll();
-
 }
