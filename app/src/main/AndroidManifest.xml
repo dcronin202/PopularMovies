@@ -23,10 +23,6 @@
 
         <activity android:name="com.example.android.popularmovies.DetailActivity"></activity>
 
-        <activity android:name="com.example.android.popularmovies.VideosActivity"></activity>
-
-        <activity android:name="com.example.android.popularmovies.ReviewsActivity"></activity>
-
     </application>
 
 </manifest>
