@@ -19,9 +19,10 @@ public class MovieMainViewModel extends AndroidViewModel {
     private MovieMainRepository repository;
 
     private static final String viewState = "view_state";
-    private static final String popularView = "popular";
-    private static final String topRatedView = "top_rated";
-    private static final String favoritesView = "favorites";
+    public static final String popularView = "popular";
+    public static final String topRatedView = "top_rated";
+    public static final String favoritesView = "favorites";
+    private String currentView = "";
     private SharedPreferences mPreferences;
 
 
@@ -65,13 +66,20 @@ public class MovieMainViewModel extends AndroidViewModel {
 
 
     public void setupSharedPref(SharedPreferences sharedPreferences) {
-        this.mPreferences = sharedPreferences;
+        if (mPreferences == null) {
+            this.mPreferences = sharedPreferences;
+        }
+
+    }
+
+    public String getViewState() {
+        return currentView;
     }
 
     private void saveViewState(String newState) {
-        String currentViewState = newState;
+        currentView = newState;
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(viewState, currentViewState);
+        editor.putString(viewState, currentView);
         editor.commit();
     }
 
