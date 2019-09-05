@@ -31,7 +31,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
     @NonNull
     @Override
     public ReviewsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_review_list_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_movie_review, viewGroup, false);
         ReviewsRecyclerViewAdapter.ViewHolder viewHolder = new ReviewsRecyclerViewAdapter.ViewHolder(view);
         return viewHolder;
     }
