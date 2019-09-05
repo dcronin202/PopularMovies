@@ -38,14 +38,12 @@ public class MovieDetailRepository {
     private MutableLiveData<ArrayList<MovieVideos>> movieVideos;
     private MutableLiveData<ArrayList<MovieReviews>> movieReviews;
 
-    private MutableLiveData<ArrayList<Movie>> movieDetails;
 
     MovieDetailRepository(Application application) {
         MovieFavoritesDatabase database = MovieFavoritesDatabase.getInstance(application);
         movieDao = database.movieDao();
         movieVideos = new MutableLiveData<ArrayList<MovieVideos>>();
         movieReviews = new MutableLiveData<ArrayList<MovieReviews>>();
-        movieDetails = new MutableLiveData<ArrayList<Movie>>();
 
     }
 
@@ -55,10 +53,6 @@ public class MovieDetailRepository {
 
     public LiveData<ArrayList<MovieReviews>> getReviewDetails() {
         return movieReviews;
-    }
-
-    public LiveData<ArrayList<Movie>> getMovieDetails() {
-        return movieDetails;
     }
 
 
@@ -121,7 +115,7 @@ public class MovieDetailRepository {
             @Override
             public void onResponse(Call<MovieVideosResponse> call, Response<MovieVideosResponse> response) {
                 onVideoResponseReceived(response);
-                // TODO: Add a message "Currently no videos for this movie" if no data is returned and do the same for Reviews
+
             }
 
             @Override
