@@ -19,8 +19,9 @@
         android:minHeight="?attr/actionBarSize"
         app:tabMode="fixed"
         app:tabGravity="fill"
-        app:tabTextColor="#FFF"
-        app:tabSelectedTextColor="@color/tabColor" />
+        app:tabTextColor="@color/tabColorGray"
+        app:tabSelectedTextColor="@color/tabColorYellow"
+        app:tabIndicatorColor="@color/tabColorGray"/>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
