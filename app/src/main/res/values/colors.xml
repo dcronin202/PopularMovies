@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#BDBDBD</color>
 
-    <color name="tabColor">#FBC02D</color>
+    <color name="tabColorYellow">#FBC02D</color>
+    <color name="tabColorGray">#CFD8DC</color>
 
 </resources>
