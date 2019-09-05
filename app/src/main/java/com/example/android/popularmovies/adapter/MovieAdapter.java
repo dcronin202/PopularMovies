@@ -44,7 +44,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
          */
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.movie_poster_list_item, parent, false);
+                    .inflate(R.layout.list_item_movie_poster, parent, false);
         }
 
         ImageView posterView = (ImageView) convertView.findViewById(R.id.movie_image);
