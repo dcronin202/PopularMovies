@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#212121">
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/error_message_display"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:text="@string/error_message"
         android:textSize="20sp"
-        android:textColor="#fff"
+        android:textColor="@color/textColorGray"
         android:gravity="center"
         android:visibility="gone"/>
 

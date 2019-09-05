@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#212121"
+    android:background="@color/colorPrimary"
     tools:context=".DetailActivity">
 
     <ScrollView
@@ -42,7 +42,7 @@
                         android:paddingTop="16dp"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:textColor="#fff"
+                        android:textColor="@color/textColorWhite"
                         android:fontFamily="sans-serif-medium"/>
 
                     <TextView
@@ -53,7 +53,7 @@
                         android:paddingRight="16dp"
                         android:paddingBottom="16dp"
                         android:textSize="18sp"
-                        android:textColor="#CFD8DC"
+                        android:textColor="@color/textColorGray"
                         android:fontFamily="sans-serif-medium"/>
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:text="@string/detail_avg_rating"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:textColor="#fff"
+                        android:textColor="@color/textColorWhite"
                         android:fontFamily="sans-serif-medium"/>
 
                     <TextView
@@ -73,7 +73,7 @@
                         android:paddingRight="16dp"
                         android:paddingBottom="16dp"
                         android:textSize="18sp"
-                        android:textColor="#CFD8DC"
+                        android:textColor="@color/textColorGray"
                         android:fontFamily="sans-serif-medium"/>
 
                     <CheckBox
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_favorites"
                         android:textSize="16sp"
-                        android:textColor="#fff"
+                        android:textColor="@color/textColorWhite"
                         android:fontFamily="sans-serif-medium"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
@@ -104,7 +104,7 @@
                 android:paddingBottom="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="16sp"
-                android:textColor="#CFD8DC"/>
+                android:textColor="@color/textColorGray"/>
 
         </LinearLayout>
 
