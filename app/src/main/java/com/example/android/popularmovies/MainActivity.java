@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewModel = ViewModelProviders.of(this).get(MovieMainViewModel.class);
+        viewModel.setupSharedPref(getSharedPreferences("movie-app", Context.MODE_PRIVATE));
         setTitle();
 
         mainActivityFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);

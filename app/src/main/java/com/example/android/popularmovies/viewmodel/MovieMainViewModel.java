@@ -73,6 +73,9 @@ public class MovieMainViewModel extends AndroidViewModel {
     }
 
     public String getViewState() {
+        if (currentView.equals("")) {
+            currentView = mPreferences.getString(viewState, "default");
+        }
         return currentView;
     }
 
