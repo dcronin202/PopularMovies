@@ -13,6 +13,4 @@ This app uses the Gradle build system. To build this project, use the "./gradlew
 
 ## Screenshots
 
-<div style="width:300px, height:617px">
 ![alt text](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/popularViewScreenshot.png)
-</div>
