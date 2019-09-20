@@ -13,4 +13,6 @@ This app uses the Gradle build system. To build this project, use the "./gradlew
 
 ## Screenshots
 
-<img src="https://github.com/dcronin202/PopularMovies/blob/master/screenshots/popularViewScreenshot.png" width=300>
+![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/popularViewScreenshot.png)   ![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/favoritesViewScreenshot.png)  
+
+![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/detailTabScreenshot.png)  ![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/reviewTabScreenshot.png)   ![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/videoTabScreenshot.png)  
