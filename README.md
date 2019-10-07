@@ -11,6 +11,12 @@ More info on The Movie Database API available at: https://www.themoviedb.org/doc
 
 This app uses the Gradle build system. To build this project, use the "./gradlew build" command or use "Import Project" in Android Studio. Additionally, if you don't already have an account with TMDb, you will need to create one in order to request an API Key (https://www.themoviedb.org/account/signup). Once you have an API Key, you can add it to the **apiKey** variable in the MovieMainRepository.java and MovieDetailRepository.java file.
 
+## Uses
+
+* [Retrofit](https://square.github.io/retrofit/)
+* [SQLite](https://www.sqlite.org/index.html)
+* [Picasso](https://square.github.io/picasso/)
+
 ## Screenshots
 
 ![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/popularViewScreenshot.png)   ![](https://github.com/dcronin202/PopularMovies/blob/master/screenshots/favoritesViewScreenshot.png)  
